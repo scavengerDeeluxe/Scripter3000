@@ -588,6 +588,8 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
             string path = @"L:\\Scripts\\System"; // or dynamically prompt user
             var rootItems = LoadPs1DirectoryTree(path);
             treeViewScripts.ItemsSource = rootItems;
+            LoadWmiNamespaces();
+            LoadSavedQueries();
         }
 
         private void InitializeAdminTools()
@@ -673,6 +675,139 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private readonly string QueriesDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WpfApp3", "WmiQueries");
+
+        private void LoadWmiNamespaces()
+        {
+            var namespaces = new List<string> { "root\\cimv2", "root\\wmi", "root\\default", "root\\ccm", "root\\SMS" };
+            cb_WmiNamespace.ItemsSource = namespaces;
+            if (namespaces.Count > 0)
+                cb_WmiNamespace.SelectedIndex = 0;
+        }
+
+        private void cb_WmiNamespace_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cb_WmiNamespace.SelectedItem == null) return;
+
+            string ns = cb_WmiNamespace.SelectedItem.ToString();
+            string target = GetTargets().FirstOrDefault() ?? "localhost";
+            try
+            {
+                var scope = new ManagementScope($"\\\\{target}\\{ns}");
+                scope.Connect();
+                var searcher = new ManagementObjectSearcher(scope, new ObjectQuery("select * from meta_class"));
+                var classes = new List<string>();
+                foreach (ManagementClass c in searcher.Get())
+                {
+                    string name = c["__CLASS"].ToString();
+                    if (!name.StartsWith("__"))
+                        classes.Add(name);
+                }
+                classes.Sort();
+                cb_WmiClass.ItemsSource = classes;
+            }
+            catch { }
+        }
+
+        private void cb_WmiClass_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            lb_WmiProperties.ItemsSource = null;
+            if (cb_WmiClass.SelectedItem == null || cb_WmiNamespace.SelectedItem == null) return;
+            string ns = cb_WmiNamespace.SelectedItem.ToString();
+            string cls = cb_WmiClass.SelectedItem.ToString();
+            string target = GetTargets().FirstOrDefault() ?? "localhost";
+            try
+            {
+                var scope = new ManagementScope($"\\\\{target}\\{ns}");
+                scope.Connect();
+                var mc = new ManagementClass(scope, new ManagementPath(cls), null);
+                var props = new List<string>();
+                foreach (PropertyData p in mc.Properties)
+                {
+                    props.Add(p.Name);
+                }
+                lb_WmiProperties.ItemsSource = props;
+            }
+            catch { }
+        }
+
+        private void btnBuildWmiQuery_Click(object sender, RoutedEventArgs e)
+        {
+            if (cb_WmiClass.SelectedItem == null) return;
+            var selectedProps = lb_WmiProperties.SelectedItems.Cast<string>().ToList();
+            string propPart = selectedProps.Count > 0 ? string.Join(",", selectedProps) : "*";
+            txt_wmiQuery.Text = $"SELECT {propPart} FROM {cb_WmiClass.SelectedItem}";
+        }
+
+        private IEnumerable<string> GetTargets()
+        {
+            return txtWmiTargets.Text.Split(new[] { '\n', '\r', ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        private async void btnRunWmiQuery_Click(object sender, RoutedEventArgs e)
+        {
+            string query = txt_wmiQuery.Text.Trim();
+            if (string.IsNullOrWhiteSpace(query) || cb_WmiNamespace.SelectedItem == null) return;
+            string ns = cb_WmiNamespace.SelectedItem.ToString();
+            var resultsTable = new DataTable();
+            bool columnsCreated = false;
+
+            foreach (var target in GetTargets())
+            {
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        var scope = new ManagementScope($"\\\\{target}\\{ns}");
+                        scope.Connect();
+                        var searcher = new ManagementObjectSearcher(scope, new ObjectQuery(query));
+                        foreach (ManagementObject obj in searcher.Get())
+                        {
+                            if (!columnsCreated)
+                            {
+                                foreach (PropertyData p in obj.Properties)
+                                    resultsTable.Columns.Add(p.Name);
+                                resultsTable.Columns.Add("Target");
+                                columnsCreated = true;
+                            }
+                            var row = resultsTable.NewRow();
+                            foreach (PropertyData p in obj.Properties)
+                                row[p.Name] = obj[p.Name];
+                            row["Target"] = target;
+                            resultsTable.Rows.Add(row);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Dispatcher.Invoke(() => System.Windows.MessageBox.Show($"Failed to query {target}: {ex.Message}"));
+                    }
+                });
+            }
+            dgWmiResults.ItemsSource = resultsTable.DefaultView;
+        }
+
+        private void LoadSavedQueries()
+        {
+            try
+            {
+                Directory.CreateDirectory(QueriesDir);
+                var files = Directory.GetFiles(QueriesDir, "*.txt");
+                var names = files.Select(Path.GetFileName).ToList();
+                lb_savedQueries.ItemsSource = names;
+            }
+            catch { }
+        }
+
+        private void btnLoadQuery_Click(object sender, RoutedEventArgs e)
+        {
+            if (lb_savedQueries.SelectedItem is string file)
+            {
+                string path = Path.Combine(QueriesDir, file);
+                if (File.Exists(path))
+                    txt_wmiQuery.Text = File.ReadAllText(path);
+            }
         }
     }
 }

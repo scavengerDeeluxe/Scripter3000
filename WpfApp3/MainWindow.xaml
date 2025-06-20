@@ -90,15 +90,29 @@
                 </TabItem>
                 <TabItem Margin="-2,-2,-73,0" Header="WMI MultiQ" Tag="WMI MultiQ" FontFamily="Trebuchet MS" FontSize="24" FontWeight="DemiBold">
                     <Grid>
-                        <TextBox TextWrapping="Wrap" Margin="16,57,912,45"/>
+                        <TextBox x:Name="txtWmiTargets" TextWrapping="Wrap" AcceptsReturn="True" Margin="16,57,912,45"/>
                         <Label Content="Targets" HorizontalAlignment="Left" Margin="16,22,0,0" VerticalAlignment="Top" Width="108"/>
-                        <Label Content="Query" HorizontalAlignment="Left" Margin="192,14,0,0" VerticalAlignment="Top" Width="108"/>
-                        <DataGrid HorizontalAlignment="Left" Height="285" Margin="143,158,0,0" VerticalAlignment="Top" Width="859"/>
-                        <Button Content="Query" HorizontalAlignment="Left" Height="19" Margin="152,134,0,0" VerticalAlignment="Top" Width="69" FontSize="13"/>
-                        <Button Content="Abort" HorizontalAlignment="Left" Height="20" Margin="225,133,0,0" VerticalAlignment="Top" Width="45" FontSize="13"/>
-                        <ListBox HorizontalAlignment="Left" Height="147" Margin="855,4,0,0" VerticalAlignment="Top" Width="168" d:ItemsSource="{d:SampleData ItemCount=5}" FontSize="10"/>
-                        <TextBox HorizontalAlignment="Left" Height="33" Margin="279,123,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="514"/>
-                        <Button Content="Load" HorizontalAlignment="Left" Height="24" Margin="802,128,0,0" VerticalAlignment="Top" Width="48" FontSize="13"/>
+
+                        <Label Content="Namespace" HorizontalAlignment="Left" Margin="192,14,0,0" VerticalAlignment="Top" Width="108"/>
+                        <ComboBox x:Name="cb_WmiNamespace" HorizontalAlignment="Left" Margin="279,14,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="cb_WmiNamespace_SelectionChanged"/>
+
+                        <Label Content="Class" HorizontalAlignment="Left" Margin="192,45,0,0" VerticalAlignment="Top" Width="108"/>
+                        <ComboBox x:Name="cb_WmiClass" HorizontalAlignment="Left" Margin="279,45,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="cb_WmiClass_SelectionChanged"/>
+
+                        <Label Content="Properties" HorizontalAlignment="Left" Margin="192,76,0,0" VerticalAlignment="Top" Width="108"/>
+                        <ListBox x:Name="lb_WmiProperties" HorizontalAlignment="Left" Margin="279,76,0,0" VerticalAlignment="Top" Width="200" Height="70" SelectionMode="Extended"/>
+                        <Button x:Name="btnBuildWmiQuery" Content="Build" HorizontalAlignment="Left" Margin="485,76,0,0" VerticalAlignment="Top" Height="23" Width="56" Click="btnBuildWmiQuery_Click"/>
+
+                        <Label Content="Query" HorizontalAlignment="Left" Margin="192,149,0,0" VerticalAlignment="Top" Width="108"/>
+                        <TextBox x:Name="txt_wmiQuery" HorizontalAlignment="Left" Height="33" Margin="279,146,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="514"/>
+
+                        <Button x:Name="btnRunWmiQuery" Content="Query" HorizontalAlignment="Left" Height="19" Margin="152,184,0,0" VerticalAlignment="Top" Width="69" FontSize="13" Click="btnRunWmiQuery_Click"/>
+                        <Button x:Name="btnAbortWmiQuery" Content="Abort" HorizontalAlignment="Left" Height="20" Margin="225,184,0,0" VerticalAlignment="Top" Width="45" FontSize="13"/>
+
+                        <ListBox x:Name="lb_savedQueries" HorizontalAlignment="Left" Height="147" Margin="855,4,0,0" VerticalAlignment="Top" Width="168" FontSize="10"/>
+                        <Button x:Name="btnLoadQuery" Content="Load" HorizontalAlignment="Left" Height="24" Margin="802,150,0,0" VerticalAlignment="Top" Width="48" FontSize="13" Click="btnLoadQuery_Click"/>
+
+                        <DataGrid x:Name="dgWmiResults" HorizontalAlignment="Left" Height="285" Margin="143,213,0,0" VerticalAlignment="Top" Width="859"/>
                     </Grid>
                 </TabItem>
             </TabControl>
