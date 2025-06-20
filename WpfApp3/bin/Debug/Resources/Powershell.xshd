@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SyntaxDefinition name="PowerShell" extensions=".ps1" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  <Color name="Comment" foreground="Green" />
+  <Color name="String" foreground="Maroon" />
+  <Color name="Keyword" foreground="Blue" fontWeight="bold" />
+  <Color name="Cmdlet" foreground="#2B91AF" />
+
+  <RuleSet ignoreCase="true">
+    <!-- Comments -->
+    <Span color="Comment" begin="#" end="\n" />
+
+    <!-- Strings -->
+    <Span color="String" begin="&quot;" end="&quot;" />
+    <Span color="String" begin="'" end="'" />
+
+    <!-- Keywords -->
+    <Keywords color="Keyword">
+      <Word>function</Word>
+      <Word>param</Word>
+      <Word>process</Word>
+      <Word>begin</Word>
+      <Word>end</Word>
+      <Word>filter</Word>
+      <Word>if</Word>
+      <Word>else</Word>
+      <Word>elseif</Word>
+      <Word>switch</Word>
+      <Word>while</Word>
+      <Word>for</Word>
+      <Word>foreach</Word>
+      <Word>return</Word>
+      <Word>break</Word>
+      <Word>continue</Word>
+      <Word>trap</Word>
+      <Word>throw</Word>
+      <Word>try</Word>
+      <Word>catch</Word>
+      <Word>finally</Word>
+      <Word>in</Word>
+      <Word>do</Word>
+      <Word>until</Word>
+    </Keywords>
+
+    <!-- Cmdlet prefixes (approximate) -->
+    <Rule color="Cmdlet">Get-</Rule>
+    <Rule color="Cmdlet">Set-</Rule>
+    <Rule color="Cmdlet">New-</Rule>
+    <Rule color="Cmdlet">Remove-</Rule>
+    <Rule color="Cmdlet">Write-</Rule>
+    <Rule color="Cmdlet">Read-</Rule>
+    <Rule color="Cmdlet">Invoke-</Rule>
+  </RuleSet>
+</SyntaxDefinition>

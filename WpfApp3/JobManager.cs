@@ -12,7 +12,6 @@ public partial class MainWindow
     {
         public class JobManager : IDisposable
         {
-            private JobManager jobManager;
             public ObservableCollection<MainWindow.RemoteJob> Jobs { get; } = new ObservableCollection<MainWindow.RemoteJob>();
             private CancellationTokenSource _cts = new CancellationTokenSource();
 

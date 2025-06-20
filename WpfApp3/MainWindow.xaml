@@ -36,36 +36,24 @@
                 </TextBox>
                 <Button x:Name="btnTestConnection" Content="Test Conn" HorizontalAlignment="Left" Margin="474,0,0,0" VerticalAlignment="Center" Click="TestConnection_Click" Height="33" Width="72"/>
             </Grid>
-            <TabControl Margin="10,54,10,50">
-                <TabItem Header="Tasks" FontFamily="Trebuchet MS" FontSize="24">
-                    <Grid Background="#FFE5E5E5" UseLayoutRounding="True" Height="432" Margin="0,0,756,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel>
-                            <ListView x:Name="lsv_adminTools"
-         SelectionChanged="lsv_adminTools_SelectionChanged"
-         DisplayMemberPath="Name"
-         Height="244" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding tools}" FontSize="18" Background="#FF545353" Foreground="#FFD7FFF5" Width="267" />
-                        </StackPanel>
-                    </Grid>
-                </TabItem>
+            <TabControl Margin="5,68,15,-346">
                 <TabItem AutomationProperties.IsOffscreenBehavior="Onscreen" IsSelected="False" Header="Scripts" FontFamily="Trebuchet MS" FontWeight="Bold" FontSize="24">
-                    <Grid Background="#FFE5E5E5" Height="736">
+                    <Grid Background="#FFE5E5E5" Height="736" Margin="3,0,-3,0">
+                        <TreeView x:Name="treeViewScripts" FontFamily="Trebuchet MS" FontSize="16" Margin="8,2,711,298" Background="#FFB1B1B1" MouseDoubleClick="treeViewScripts_MouseDoubleClick">
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                    <TextBlock Text="{Binding Name}" />
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
                         <GridSplitter Width="5" Margin="0,485,0,-158"/>
-                        <StackPanel Margin="0,0,0,333">
-                            <TreeView x:Name="treeViewScripts" FontFamily="Trebuchet MS" FontSize="16" Height="396" Width="345" HorizontalAlignment="Left" MouseLeftButtonDown="treeViewScripts_MouseDoubleClick">
-                                <TreeView.ItemTemplate>
-                                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                                        <TextBlock Text="{Binding Name}" />
-                                    </HierarchicalDataTemplate>
-                                </TreeView.ItemTemplate>
-                            </TreeView>
-                        </StackPanel>
+                        <Button Click="Button_Click_1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="82" FontSize="16" Content="EXECUTE" FontFamily="Trebuchet MS" FontWeight="Bold" Margin="623,402,0,0"/>
+                        <Button x:Name="OpenScriptPopout" Content="View Script" Click="OpenScriptPopout_Click_1" RenderTransformOrigin="0.467,0.429" FontSize="16" Panel.ZIndex="4" FontFamily="Trebuchet MS" FontWeight="DemiBold" Height="33" Margin="354,409,553,294"/>
+                        <StackPanel Margin="0,0,0,333"/>
                         <Grid Margin="352,2,-2,308">
-                            <Button x:Name="OpenScriptLogs" Content="Pop-Out&#xA;Logs" Click="OpenLogsPopou" FontSize="16" FontFamily="Trebuchet MS" FontWeight="Bold" Height="45" Width="87" Margin="573,2,8,378"/>
+                            <Button x:Name="OpenScriptLogs" Content="Pop-Out&#xA;Logs" Click="OpenLogsPopou" FontSize="16" FontFamily="Trebuchet MS" FontWeight="Bold" Height="45" Width="87" Margin="540,16,54,365"/>
                             <Button x:Name="SaveScript" Content="Save &#xA;Script" Margin="898,-226,-470,613" Click="SaveScript_Click" IsEnabled="False" Visibility="Hidden"/>
-                            <ListView x:Name="lsv_jobs" SelectionChanged="lsv_jobs_SelectionChanged" ItemsSource="{Binding Jobs}" Margin="387,50,6,-16" FontSize="16" d:ItemsSource="{d:SampleData ItemCount=5}">
+                            <ListView x:Name="lsv_jobs" SelectionChanged="lsv_jobs_SelectionChanged" ItemsSource="{Binding Jobs}" Margin="387,78,6,-16" FontSize="16" d:ItemsSource="{d:SampleData ItemCount=5}">
                                 <ListView.View>
                                     <GridView>
                                         <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" />
@@ -74,9 +62,14 @@
                                     </GridView>
                                 </ListView.View>
                             </ListView>
-                            <Button x:Name="btnCancelJob" Content="Cancel&#xA; Selected" Margin="500,4,92,392" Click="CancelJob_Click" FontSize="12" Background="#FFEF7171" />
+                            <Button x:Name="btnCancelJob" Content="Cancel&#xA; Selected" Margin="400,25,192,371" Click="CancelJob_Click" FontSize="12" Background="#FFEF7171" />
                         </Grid>
-                        <avalonEdit:TextEditor  x:Name="editorScript" ShowLineNumbers="True" FontFamily="Consolas" SyntaxHighlighting="PowerShell" Background="White" FontSize="12" Foreground="#FF203830" Margin="348,5,291,288" UseLayoutRounding="True" LostFocus="editorScript_LostFocus" >
+                        <RichTextBox x:Name="editorLogs" FontFamily="Consolas"  Background="#FF505050" Foreground="#FF44C7A0" Margin="9,456,-13,-27" FontSize="14" >
+                            <FlowDocument>
+                                <Paragraph/>
+                            </FlowDocument>
+                        </RichTextBox>
+                        <avalonEdit:TextEditor  x:Name="editorScript" ShowLineNumbers="True" FontFamily="Consolas" SyntaxHighlighting="PowerShell" Background="White" FontSize="12" Foreground="#FF203830" Margin="332,14,307,332" UseLayoutRounding="True" LostFocus="editorScript_LostFocus" >
                             <avalonEdit:TextEditor.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform ScaleY="1" ScaleX="1"/>
@@ -86,48 +79,54 @@
                                 </TransformGroup>
                             </avalonEdit:TextEditor.RenderTransform>
                         </avalonEdit:TextEditor>
+                        <DataGrid x:Name="dg_logs" HorizontalAlignment="Left" Height="352" Margin="35,458,0,0" VerticalAlignment="Top" Width="952" d:ItemsSource="{d:SampleData ItemCount=5}" FontSize="14" FontWeight="Normal" Visibility="Hidden"/>
                     </Grid>
+                </TabItem>
+                <TabItem Header="Tasks" FontFamily="Trebuchet MS" FontSize="24" FontWeight="DemiBold">
+                    <DockPanel LastChildFill="False" Height="538" Margin="-4,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <ListView x:Name="lsv_adminTools"
+         SelectionChanged="lsv_adminTools_SelectionChanged"
+         DisplayMemberPath="Name"
+         IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding tools}" FontSize="18" Background="#FF545353" Foreground="#FFD7FFF5" SnapsToDevicePixels="True" SelectionMode="Single" Width="324" Height="474" />
+                    </DockPanel>
                 </TabItem>
                 <TabItem Margin="-2,-2,-73,0" Header="WMI MultiQ" Tag="WMI MultiQ" FontFamily="Trebuchet MS" FontSize="24" FontWeight="DemiBold">
                     <Grid>
-                        <TextBox x:Name="txtWmiTargets" TextWrapping="Wrap" AcceptsReturn="True" Margin="16,57,912,45"/>
+                        <TextBox x:Name="txtWmiTargets" TextWrapping="Wrap" AcceptsReturn="True" Margin="16,57,852,565" FontSize="12"/>
                         <Label Content="Targets" HorizontalAlignment="Left" Margin="16,22,0,0" VerticalAlignment="Top" Width="108"/>
 
-                        <Label Content="Namespace" HorizontalAlignment="Left" Margin="192,14,0,0" VerticalAlignment="Top" Width="108"/>
-                        <ComboBox x:Name="cb_WmiNamespace" HorizontalAlignment="Left" Margin="279,14,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="cb_WmiNamespace_SelectionChanged"/>
+                        <Label Content="Namespace" HorizontalAlignment="Left" Margin="184,15,0,0" VerticalAlignment="Top" Width="88" RenderTransformOrigin="0.5,0.5" FontSize="14">
+                            <Label.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform AngleY="0.315"/>
+                                    <RotateTransform/>
+                                    <TranslateTransform Y="0.495"/>
+                                </TransformGroup>
+                            </Label.RenderTransform>
+                        </Label>
+                        <ComboBox x:Name="cb_WmiNamespace" HorizontalAlignment="Left" Margin="279,14,0,0" VerticalAlignment="Top" Width="337" SelectionChanged="cb_WmiNamespace_SelectionChanged" Height="31" FontSize="14"/>
 
-                        <Label Content="Class" HorizontalAlignment="Left" Margin="192,45,0,0" VerticalAlignment="Top" Width="108"/>
-                        <ComboBox x:Name="cb_WmiClass" HorizontalAlignment="Left" Margin="279,45,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="cb_WmiClass_SelectionChanged"/>
+                        <Label Content="Class" HorizontalAlignment="Left" Margin="223,55,0,0" VerticalAlignment="Top" Width="45" FontSize="14"/>
+                        <ComboBox x:Name="cb_WmiClass" HorizontalAlignment="Left" Margin="281,58,0,0" VerticalAlignment="Top" Width="331" SelectionChanged="cb_WmiClass_SelectionChanged" FontSize="13"/>
 
-                        <Label Content="Properties" HorizontalAlignment="Left" Margin="192,76,0,0" VerticalAlignment="Top" Width="108"/>
-                        <ListBox x:Name="lb_WmiProperties" HorizontalAlignment="Left" Margin="279,76,0,0" VerticalAlignment="Top" Width="200" Height="70" SelectionMode="Extended"/>
-                        <Button x:Name="btnBuildWmiQuery" Content="Build" HorizontalAlignment="Left" Margin="485,76,0,0" VerticalAlignment="Top" Height="23" Width="56" Click="btnBuildWmiQuery_Click"/>
+                        <Label Content="Properties" HorizontalAlignment="Left" Margin="200,93,0,0" VerticalAlignment="Top" Width="78" FontSize="14"/>
+                        <ListBox x:Name="lb_WmiProperties" HorizontalAlignment="Left" Margin="288,87,0,0" VerticalAlignment="Top" Width="323" Height="70" SelectionMode="Extended" FontSize="12"/>
+                        <Button x:Name="btnBuildWmiQuery" Content="Build" HorizontalAlignment="Left" Margin="389,162,0,0" VerticalAlignment="Top" Height="40" Width="72" Click="btnBuildWmiQuery_Click" FontSize="14"/>
 
-                        <Label Content="Query" HorizontalAlignment="Left" Margin="192,149,0,0" VerticalAlignment="Top" Width="108"/>
-                        <TextBox x:Name="txt_wmiQuery" HorizontalAlignment="Left" Height="33" Margin="279,146,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="514"/>
+                        <Label Content="Query" HorizontalAlignment="Left" Margin="282,194,0,0" VerticalAlignment="Top" Width="66" FontSize="14"/>
+                        <TextBox x:Name="txt_wmiQuery" HorizontalAlignment="Left" Height="33" Margin="274,234,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="514"/>
 
-                        <Button x:Name="btnRunWmiQuery" Content="Query" HorizontalAlignment="Left" Height="19" Margin="152,184,0,0" VerticalAlignment="Top" Width="69" FontSize="13" Click="btnRunWmiQuery_Click"/>
-                        <Button x:Name="btnAbortWmiQuery" Content="Abort" HorizontalAlignment="Left" Height="20" Margin="225,184,0,0" VerticalAlignment="Top" Width="45" FontSize="13"/>
+                        <Button x:Name="btnRunWmiQuery" Content="Query" HorizontalAlignment="Left" Height="19" Margin="807,236,0,0" VerticalAlignment="Top" Width="69" FontSize="13" Click="btnRunWmiQuery_Click"/>
+                        <Button x:Name="btnAbortWmiQuery" Content="Abort" HorizontalAlignment="Left" Height="20" Margin="207,240,0,0" VerticalAlignment="Top" Width="45" FontSize="13"/>
 
                         <ListBox x:Name="lb_savedQueries" HorizontalAlignment="Left" Height="147" Margin="855,4,0,0" VerticalAlignment="Top" Width="168" FontSize="10"/>
-                        <Button x:Name="btnLoadQuery" Content="Load" HorizontalAlignment="Left" Height="24" Margin="802,150,0,0" VerticalAlignment="Top" Width="48" FontSize="13" Click="btnLoadQuery_Click"/>
-
-                        <DataGrid x:Name="dgWmiResults" HorizontalAlignment="Left" Height="285" Margin="143,213,0,0" VerticalAlignment="Top" Width="859"/>
+                        <Button x:Name="btnLoadQuery" Content="Load" HorizontalAlignment="Left" Height="24" Margin="974,156,0,0" VerticalAlignment="Top" Width="48" FontSize="13" Click="btnLoadQuery_Click"/>
+                        <DataGrid x:Name="dgWmiResults" HorizontalAlignment="Center" Height="535" Margin="0,272,0,0" VerticalAlignment="Top" Width="973" FontSize="13"/>
                     </Grid>
                 </TabItem>
             </TabControl>
-            <Button x:Name="OpenScriptPopout" Content="View Script" Click="OpenScriptPopout_Click_1" RenderTransformOrigin="0.467,0.429" FontSize="12" Margin="948,44,18,511" Panel.ZIndex="4"/>
-            <Button Click="Button_Click_1" Margin="858,42,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="82" FontSize="16" Content="EXECUTE" FontFamily="Trebuchet MS" FontWeight="Bold"/>
         </Grid>
-        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="9,541,20,129"/>
-        <DataGrid x:Name="dg_logs" HorizontalAlignment="Left" Height="299" Margin="7,539,0,0" VerticalAlignment="Top" Width="1025" d:ItemsSource="{d:SampleData ItemCount=5}" FontSize="14" FontWeight="Normal"/>
-        <RichTextBox x:Name="editorLogs" FontFamily="Consolas"  Background="#FF383737" Foreground="#FF8CD68A" Margin="5,541,13,123" >
-            <FlowDocument>
-                <Paragraph/>
-            </FlowDocument>
-        </RichTextBox>
-        <ComboBox x:Name="combo_fontsize" HorizontalAlignment="Left" Margin="952,871,0,0" VerticalAlignment="Top" Width="50" SelectionChanged="combo_fontsize_SelectionChanged"/>
-        <Label Content="FontSize" HorizontalAlignment="Left" Margin="866,866,0,0" VerticalAlignment="Top" Width="68"/>
 
     </Grid>
 </Window>

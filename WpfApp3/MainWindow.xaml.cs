@@ -19,7 +19,6 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Xml;
 
-
 namespace WpfApp3
 {
     /// <summary>
@@ -27,7 +26,7 @@ namespace WpfApp3
     /// </summary>
     public partial class MainWindow : Window
     {
-   //     private ObservableCollection<RemoteJob> Jobs = new ObservableCollection<RemoteJob>();
+        //     private ObservableCollection<RemoteJob> Jobs = new ObservableCollection<RemoteJob>();
         private JobManager jobManager;
         public MainWindow()
         {
@@ -56,15 +55,15 @@ namespace WpfApp3
                     };
 
                     // Add .ps1 children from this directory
-           //         foreach (var ps1File in Directory.GetFiles(dir, "*.ps1"))
-         //           {
-           //             dirItem.Children.Add(new FileSystemItem
-           //             {
-           //                 Name = System.IO.Path.GetFileName(ps1File),
-          //                  FullPath = ps1File,
-           //                 IsDirectory = false
-          //              });
-            //        }
+                    //         foreach (var ps1File in Directory.GetFiles(dir, "*.ps1"))
+                    //           {
+                    //             dirItem.Children.Add(new FileSystemItem
+                    //             {
+                    //                 Name = System.IO.Path.GetFileName(ps1File),
+                    //                  FullPath = ps1File,
+                    //                 IsDirectory = false
+                    //              });
+                    //        }
 
                     // Recurse into subdirectories
                     var childDirs = LoadPs1DirectoryTree(dir);
@@ -134,9 +133,9 @@ namespace WpfApp3
                 {
                     editorScript.Text = popup.ScriptText;
                 }
-            
-                        };
-}
+
+            };
+        }
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
             // Fix for CS1501: No overload for method 'ClearValue' takes 0 arguments
@@ -152,7 +151,7 @@ namespace WpfApp3
                 System.Windows.MessageBox.Show("No script to run.");
                 return;
             }
-           
+
             SaveHistory(scriptText);
             string thisDate = DateTime.Now.ToString("yyyyMMddHHmmss");
             string remoteFileName = "temppowershellrunner" + thisDate + ".ps1";
@@ -190,7 +189,7 @@ namespace WpfApp3
                         });
                         return;
                     }
-                   
+
                     RunRemoteScript(job);
 
                     job.Status = "Running";
@@ -245,8 +244,7 @@ namespace WpfApp3
                 }
             });
         }
-
-        bool IsStructuredData(string text,  out DataTable dataTable)
+        bool IsStructuredData(string text, out DataTable dataTable)
         {
             {
                 dataTable = new DataTable();
@@ -302,8 +300,6 @@ namespace WpfApp3
                 return true;
             }
         }
-
-
         private void OpenLogsPopou(object sender, RoutedEventArgs e)
         {
             var theseLogs = new System.Windows.Documents.TextRange(editorLogs.Document.ContentStart, editorLogs.Document.ContentEnd).Text;
@@ -321,7 +317,7 @@ namespace WpfApp3
         {
             if (lsv_jobs.SelectedItem is RemoteJob job)
             {
-               if(IsStructuredData(job.Log, out var tableData))
+                if (IsStructuredData(job.Log, out var tableData))
                 {
                     dg_logs.ItemsSource = tableData.DefaultView;
                 }
@@ -404,7 +400,7 @@ namespace WpfApp3
 
             string command = $"cmd /c powershell.exe -ExecutionPolicy Bypass -NoProfile -File \"{uncScriptPath}\" > \"{uncLogPath}\" 2>&1";
             //string command = "powershell -ExecutionPolicy Bypass -NoProfile -File \"C:\\windows\\temp\\temppowershellrunner" + thisDate + ".ps1\" *>&1 | tee-object -FilePath \"C:\\windows\\temp\\" + thisDate + ".log\"";
-         //   string command = "cmd /c powershell.exe -ExecutionPolicy Bypass -NoProfile -File " + job.remotePath + " *> " + job.logPath + " 2>&1";
+            //   string command = "cmd /c powershell.exe -ExecutionPolicy Bypass -NoProfile -File " + job.remotePath + " *> " + job.logPath + " 2>&1";
             Console.WriteLine("Command to run: " + command);
 
             ConnectionOptions options = new ConnectionOptions();
@@ -467,7 +463,7 @@ namespace WpfApp3
                 {
                     return results.Count > 0;
                 }
-            }    
+            }
             catch
             {
                 return false;
@@ -515,16 +511,16 @@ namespace WpfApp3
             }
         }
         private void bt_Connect_Click(object sender, RoutedEventArgs e)
-        {        }
+        { }
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
 
         }
-private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs e)
-{
-    if (lsv_jobs.SelectedItem is RemoteJob selectedJob)
-    {
-        string log = selectedJob.Log ?? "No log output yet.";
+        private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lsv_jobs.SelectedItem is RemoteJob selectedJob)
+            {
+                string log = selectedJob.Log ?? "No log output yet.";
 
                 var table = ParseFormattedTable(log);
                 LoadTableTextToWpfGrid(dg_logs, log);
@@ -532,10 +528,9 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
                 var cleaned = log.Trim();
 
                 editorLogs.Document.Blocks.Clear();
-        editorLogs.AppendText(cleaned);
-    }
-}
-        //
+                editorLogs.AppendText(cleaned);
+            }
+        }
         private void LoadTableTextToWpfGrid(System.Windows.Controls.DataGrid grid, string rawText)
         {
             var table = ParseFormattedTable(rawText);
@@ -554,7 +549,6 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
 
             grid.ItemsSource = items;
         }
-
         private DataTable ParseFormattedTable(string rawText)
         {
             var lines = rawText.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -580,8 +574,6 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
 
             return table;
         }
-
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             InitializeAdminTools();
@@ -591,7 +583,6 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
             LoadWmiNamespaces();
             LoadSavedQueries();
         }
-
         private void InitializeAdminTools()
         {
             var tools = new ObservableCollection<AdminTools>
@@ -607,9 +598,6 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
 
             lsv_adminTools.ItemsSource = tools;
         }
-
-
-
         private void lsv_adminTools_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lsv_adminTools.SelectedItem is AdminTools tool && !string.IsNullOrWhiteSpace(tool.executeTarget))
@@ -624,7 +612,7 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
 
                 try
                 {
-                    string args =  tool.executeTarget + " /computer:" + target ;
+                    string args = tool.executeTarget + " /computer:" + target;
                     Process.Start("C:\\windows\\system32\\mmc.exe", args);
                 }
                 catch (Exception ex)
@@ -633,32 +621,19 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
                 }
             }
         }
-
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             var fontsize = new List<string> { "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "32" };
-            combo_fontsize.ItemsSource = fontsize;
         }
-
         private void combo_fontsize_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (double.TryParse(combo_fontsize.SelectionBoxItem.ToString(), out double fontSize))
-            {
-                editorLogs.FontSize = fontSize;
-            }
-            else
-            {
-                // Handle invalid input, e.g., log an error or set a default value
-            }
         }
-
         private void editorScript_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             editorScript.Width = 1200;
             editorScript.Height = 1200;
 
         }
-
         private void editorScript_LostFocus(object sender, RoutedEventArgs e)
         {
             editorScript.Width = 392;
@@ -666,19 +641,15 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
 
 
         }
-
         private void MultiRunner_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
 
         }
-
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
-
         private readonly string QueriesDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WpfApp3", "WmiQueries");
-
         private void LoadWmiNamespaces()
         {
             var namespaces = new List<string> { "root\\cimv2", "root\\wmi", "root\\default", "root\\ccm", "root\\SMS" };
@@ -686,7 +657,6 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
             if (namespaces.Count > 0)
                 cb_WmiNamespace.SelectedIndex = 0;
         }
-
         private void cb_WmiNamespace_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cb_WmiNamespace.SelectedItem == null) return;
@@ -710,7 +680,6 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
             }
             catch { }
         }
-
         private void cb_WmiClass_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             lb_WmiProperties.ItemsSource = null;
@@ -732,7 +701,6 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
             }
             catch { }
         }
-
         private void btnBuildWmiQuery_Click(object sender, RoutedEventArgs e)
         {
             if (cb_WmiClass.SelectedItem == null) return;
@@ -740,12 +708,10 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
             string propPart = selectedProps.Count > 0 ? string.Join(",", selectedProps) : "*";
             txt_wmiQuery.Text = $"SELECT {propPart} FROM {cb_WmiClass.SelectedItem}";
         }
-
         private IEnumerable<string> GetTargets()
         {
             return txtWmiTargets.Text.Split(new[] { '\n', '\r', ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
         }
-
         private async void btnRunWmiQuery_Click(object sender, RoutedEventArgs e)
         {
             string query = txt_wmiQuery.Text.Trim();
@@ -787,7 +753,6 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
             }
             dgWmiResults.ItemsSource = resultsTable.DefaultView;
         }
-
         private void LoadSavedQueries()
         {
             try
@@ -799,7 +764,6 @@ private void lsv_jobs_SelectionChanged(object sender, SelectionChangedEventArgs 
             }
             catch { }
         }
-
         private void btnLoadQuery_Click(object sender, RoutedEventArgs e)
         {
             if (lb_savedQueries.SelectedItem is string file)
