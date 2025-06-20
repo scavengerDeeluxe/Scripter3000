@@ -650,6 +650,7 @@ namespace WpfApp3
 
         }
         private readonly string QueriesDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WpfApp3", "WmiQueries");
+
         private void LoadWmiNamespaces()
         {
             var namespaces = new List<string> { "root\\cimv2", "root\\wmi", "root\\default", "root\\ccm", "root\\SMS" };
@@ -657,6 +658,7 @@ namespace WpfApp3
             if (namespaces.Count > 0)
                 cb_WmiNamespace.SelectedIndex = 0;
         }
+
         private void cb_WmiNamespace_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cb_WmiNamespace.SelectedItem == null) return;
@@ -680,6 +682,7 @@ namespace WpfApp3
             }
             catch { }
         }
+
         private void cb_WmiClass_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             lb_WmiProperties.ItemsSource = null;
@@ -701,6 +704,7 @@ namespace WpfApp3
             }
             catch { }
         }
+
         private void btnBuildWmiQuery_Click(object sender, RoutedEventArgs e)
         {
             if (cb_WmiClass.SelectedItem == null) return;
@@ -708,10 +712,12 @@ namespace WpfApp3
             string propPart = selectedProps.Count > 0 ? string.Join(",", selectedProps) : "*";
             txt_wmiQuery.Text = $"SELECT {propPart} FROM {cb_WmiClass.SelectedItem}";
         }
+
         private IEnumerable<string> GetTargets()
         {
             return txtWmiTargets.Text.Split(new[] { '\n', '\r', ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
         }
+
         private async void btnRunWmiQuery_Click(object sender, RoutedEventArgs e)
         {
             string query = txt_wmiQuery.Text.Trim();
@@ -753,6 +759,7 @@ namespace WpfApp3
             }
             dgWmiResults.ItemsSource = resultsTable.DefaultView;
         }
+
         private void LoadSavedQueries()
         {
             try
@@ -764,6 +771,7 @@ namespace WpfApp3
             }
             catch { }
         }
+
         private void btnLoadQuery_Click(object sender, RoutedEventArgs e)
         {
             if (lb_savedQueries.SelectedItem is string file)
