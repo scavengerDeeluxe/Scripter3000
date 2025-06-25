@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 
 
-namespace WpfApp3
+namespace ScriptArcade
 {
 public partial class MainWindow
     {

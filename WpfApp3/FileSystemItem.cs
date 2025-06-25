@@ -2,7 +2,7 @@
 using System.ComponentModel;
 
 
-namespace WpfApp3
+namespace ScriptArcade
 {
 public partial class MainWindow
     {

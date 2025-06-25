@@ -42,11 +42,28 @@
     <Reference Include="ICSharpCode.AvalonEdit, Version=6.3.1.120, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
       <HintPath>..\packages\AvalonEdit.6.3.1.120\lib\net462\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
+    <Reference Include="NavigationPane, Version=1.0.5988.20744, Culture=neutral, PublicKeyToken=b239f36db07135c1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NavigationPane.2.1.0.0\lib\net40\NavigationPane.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin_Explorer">
+      <HintPath>..\..\..\..\..\Desktop\Plugin_Explorer.dll</HintPath>
+    </Reference>
+    <Reference Include="sccmclictr.automation">
+      <HintPath>..\..\..\..\..\Desktop\sccmclictr-1.0.6.1\sccmclictr-master\SCCMCliCtrWPF\SCCMCliCtrWPF\sccmclictr.automation.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.PowerShell.5.ReferenceAssemblies.1.1.0\lib\net4\System.Management.Automation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Input.Toolkit">
+      <HintPath>..\..\..\..\..\Desktop\sccmclictr-1.0.6.1\sccmclictr-master\SCCMCliCtrWPF\SCCMCliCtrWPF\System.Windows.Controls.Input.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Layout.Toolkit">
+      <HintPath>..\..\..\..\..\Desktop\sccmclictr-1.0.6.1\sccmclictr-master\SCCMCliCtrWPF\SCCMCliCtrWPF\System.Windows.Controls.Layout.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Controls.Ribbon" />
     <Reference Include="System.Windows.Forms" />
@@ -59,25 +76,68 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit">
+      <HintPath>..\..\..\..\..\Desktop\sccmclictr-1.0.6.1\sccmclictr-master\SCCMCliCtrWPF\packages\WPFToolkit.3.5.50211.1\lib\WPFToolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="controls\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\ScheduleControl\CloseButton.xaml.cs">
+      <DependentUpon>CloseButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\ScheduleControl\DayControl.xaml.cs">
+      <DependentUpon>DayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\ScheduleControl\ScheduleControl.xaml.cs">
+      <DependentUpon>ScheduleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\ScheduleControl\TimeLine.xaml.cs">
+      <DependentUpon>TimeLine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FileSystemItem.cs" />
+    <Compile Include="helper\Converter.cs" />
     <Compile Include="JobManager.cs" />
+    <Compile Include="Logs.cs" />
     <Compile Include="LogViewer.xaml.cs">
       <DependentUpon>LogViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="AdminTools.cs" />
     <Compile Include="RemoteJob.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
+    <Page Include="controls\About.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\ScheduleControl\CloseButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\ScheduleControl\DayControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\ScheduleControl\ScheduleControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\ScheduleControl\TimeLine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="LogViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -118,6 +178,53 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <Resource Include="images\Add-ons setup.ico" />
+    <Resource Include="images\Add.ico" />
+    <Resource Include="images\Browse.ico" />
+    <Resource Include="images\Computer.ico" />
+    <Resource Include="images\ComputerPolicy.ico" />
+    <Resource Include="images\Computer_protection.ico" />
+    <Resource Include="images\Confirm visible_24.png" />
+    <Resource Include="images\Datetime.ico" />
+    <Resource Include="images\Delete.ico" />
+    <Resource Include="images\Favorites visible.ico" />
+    <Resource Include="images\Favorites.ico" />
+    <Resource Include="images\Flag 4.ico" />
+    <Resource Include="images\Flag.ico" />
+    <Resource Include="images\Heartbeat.ico" />
+    <Resource Include="images\Icon012.ico" />
+    <Resource Include="images\Icon065.ico" />
+    <Resource Include="images\Icon140.ico" />
+    <Resource Include="images\Icon16_256.png" />
+    <Resource Include="images\Import File.ico" />
+    <Resource Include="images\Important Email.ico" />
+    <Resource Include="images\Invalid software update.gif" />
+    <Resource Include="images\Memory.ico" />
+    <Resource Include="images\msi.ico" />
+    <Resource Include="images\On.ico" />
+    <Resource Include="images\Pack_close.ico" />
+    <Resource Include="images\Play.ico" />
+    <Resource Include="images\Process.ico" />
+    <Resource Include="images\Repair.ico" />
+    <Resource Include="images\Save.ico" />
+    <Resource Include="images\Search File.ico" />
+    <Resource Include="images\Searching Disc.ico" />
+    <Resource Include="images\Send Receive.ico" />
+    <Resource Include="images\ServDeps_103.ico" />
+    <Resource Include="images\Setting.ico" />
+    <Resource Include="images\setupold.ico" />
+    <Resource Include="images\shell32.dll_I0017_0409.ico" />
+    <Resource Include="images\Shopping.ico" />
+    <Resource Include="images\Software update.gif" />
+    <Resource Include="images\SPY.ico" />
+    <Resource Include="images\Stocks.ico" />
+    <Resource Include="images\Stop.ico" />
+    <Resource Include="images\SWUpdate.png" />
+    <Resource Include="images\Tools.ico" />
+    <Resource Include="images\User.ico" />
+    <Resource Include="images\UserPolicy.ico" />
+    <Resource Include="images\Warning.ico" />
+    <Resource Include="images\Windows_PowerShell_icon.png" />
     <Content Include="Resources\Powershell.xshd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

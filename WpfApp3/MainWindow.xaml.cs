@@ -1,6 +1,8 @@
 ﻿using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using Newtonsoft.Json; // Add at the top if not present
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -9,29 +11,38 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Management.Automation;
+using System.Net;
+using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Xml;
+using MessageBox = System.Windows.MessageBox;
 
-namespace WpfApp3
+namespace ScriptArcade
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+
         //     private ObservableCollection<RemoteJob> Jobs = new ObservableCollection<RemoteJob>();
         private JobManager jobManager;
+
         public MainWindow()
         {
             InitializeComponent();
             LoadPowerShellHighlighting();
+            string path = @"D:\\Scripts\\System";
+            _allItems = LoadPs1DirectoryTree(path);
+            treeViewScripts.ItemsSource = _allItems;
 
             jobManager = new JobManager();
             lsv_jobs.ItemsSource = jobManager.Jobs;
@@ -346,7 +357,7 @@ namespace WpfApp3
         {
             try
             {
-                var dir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WpfApp3");
+                var dir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ScriptArcade");
                 Directory.CreateDirectory(dir);
                 var file = System.IO.Path.Combine(dir, "history.log");
                 File.AppendAllText(file, $"{DateTime.Now:u} - {script}{Environment.NewLine}");
@@ -577,13 +588,47 @@ namespace WpfApp3
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             InitializeAdminTools();
-            string path = @"L:\\Scripts\\System"; // or dynamically prompt user
-            var rootItems = LoadPs1DirectoryTree(path);
-            treeViewScripts.ItemsSource = rootItems;
             LoadWmiNamespaces();
-            LoadSavedQueries();
+            LoadQueriesFromJson("D:\\Scripts\\WmiQueries.json");
         }
-        private void InitializeAdminTools()
+
+        private List<WmiQuery> savedQueries = new List<WmiQuery>();
+
+        private void LoadQueriesFromJson(string filePath)
+        {
+            try
+            {
+                var json = File.ReadAllText(filePath);
+                savedQueries = JsonConvert.DeserializeObject<List<WmiQuery>>(json);
+                lb_savedQueries.ItemsSource = savedQueries;
+                lb_savedQueries.DisplayMemberPath = "Name";
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Failed to load queries: {ex.Message}");
+            }
+        }
+private IEnumerable<string> GetTargets()
+    {
+        var entries = txtWmiTargets.Text
+            .Split(new[] { '\n', '\r', ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (var entry in entries)
+        {
+            if (entry.Contains("/"))
+            {
+                foreach (var ip in ExpandCidr(entry))
+                    yield return ip;
+            }
+            else
+            {
+                yield return entry;
+            }
+        }
+    }
+
+
+    private void InitializeAdminTools()
         {
             var tools = new ObservableCollection<AdminTools>
     {
@@ -649,7 +694,7 @@ namespace WpfApp3
         {
 
         }
-        private readonly string QueriesDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WpfApp3", "WmiQueries");
+        private readonly string QueriesDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ScriptArcade", "WmiQueries");
 
         private void LoadWmiNamespaces()
         {
@@ -664,7 +709,7 @@ namespace WpfApp3
             if (cb_WmiNamespace.SelectedItem == null) return;
 
             string ns = cb_WmiNamespace.SelectedItem.ToString();
-            string target = GetTargets().FirstOrDefault() ?? "localhost";
+            string target = GetTargetz().FirstOrDefault() ?? "localhost";
             try
             {
                 var scope = new ManagementScope($"\\\\{target}\\{ns}");
@@ -680,29 +725,39 @@ namespace WpfApp3
                 classes.Sort();
                 cb_WmiClass.ItemsSource = classes;
             }
-            catch { }
-        }
+catch (Exception ex)
+{
+    System.Windows.MessageBox.Show($"Failed to load WMI classes: {ex.Message}");
+}        }
 
-        private void cb_WmiClass_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private async void cb_WmiClass_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             lb_WmiProperties.ItemsSource = null;
             if (cb_WmiClass.SelectedItem == null || cb_WmiNamespace.SelectedItem == null) return;
             string ns = cb_WmiNamespace.SelectedItem.ToString();
             string cls = cb_WmiClass.SelectedItem.ToString();
-            string target = GetTargets().FirstOrDefault() ?? "localhost";
+
             try
             {
-                var scope = new ManagementScope($"\\\\{target}\\{ns}");
-                scope.Connect();
-                var mc = new ManagementClass(scope, new ManagementPath(cls), null);
-                var props = new List<string>();
-                foreach (PropertyData p in mc.Properties)
+                var props = await Task.Run(() =>
                 {
-                    props.Add(p.Name);
-                }
+                    var scope = new ManagementScope($@"\\localhost\{ns}");
+                    scope.Connect();
+
+                    var query = new ObjectQuery($"SELECT * FROM meta_class WHERE __CLASS = '{cls}'");
+                    var searcher = new ManagementObjectSearcher(scope, query);
+                    var result = searcher.Get().Cast<ManagementClass>().FirstOrDefault();
+                    if (result == null) return new List<string>();
+                    return result.Properties.Cast<PropertyData>().Select(p => p.Name).ToList();
+                });
+
                 lb_WmiProperties.ItemsSource = props;
             }
-            catch { }
+            catch
+            {
+                // Optionally handle or log errors here
+            }
         }
 
         private void btnBuildWmiQuery_Click(object sender, RoutedEventArgs e)
@@ -713,7 +768,7 @@ namespace WpfApp3
             txt_wmiQuery.Text = $"SELECT {propPart} FROM {cb_WmiClass.SelectedItem}";
         }
 
-        private IEnumerable<string> GetTargets()
+        private IEnumerable<string> GetTargetz()
         {
             return txtWmiTargets.Text.Split(new[] { '\n', '\r', ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
         }
@@ -723,19 +778,54 @@ namespace WpfApp3
             string query = txt_wmiQuery.Text.Trim();
             if (string.IsNullOrWhiteSpace(query) || cb_WmiNamespace.SelectedItem == null) return;
             string ns = cb_WmiNamespace.SelectedItem.ToString();
+
+            var rawTargets = txtWmiTargets.Text
+                .Split(new[] { '\n', '\r', ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(t => t.Trim())
+                .ToList();
+
+            var resolvedTargets = new ConcurrentBag<string>();
+
+            // Expand subnets and ping hosts
+            await Task.WhenAll(rawTargets.Select(async t =>
+            {
+                if (IsSubnet(t))
+                {
+                    foreach (var ip in ExpandCidr(t))
+                    {
+                        if (await PingHost(ip))
+                            resolvedTargets.Add(ip);
+                    }
+                }
+                else
+                {
+                    if (await PingHost(t))
+                        resolvedTargets.Add(t);
+                }
+            }));
+
+            if (resolvedTargets.Count == 0)
+            {
+                MessageBox.Show("No online targets found.");
+                return;
+            }
+
             var resultsTable = new DataTable();
+            var resultsLock = new object();
             bool columnsCreated = false;
 
-            foreach (var target in GetTargets())
+            var tasks = resolvedTargets.Select(target => Task.Run(() =>
             {
-                await Task.Run(() =>
+                try
                 {
-                    try
+                    var scope = new ManagementScope($"\\\\{target}\\{ns}");
+                    scope.Connect();
+                    var searcher = new ManagementObjectSearcher(scope, new ObjectQuery(query));
+                    var collection = searcher.Get();
+
+                    lock (resultsLock)
                     {
-                        var scope = new ManagementScope($"\\\\{target}\\{ns}");
-                        scope.Connect();
-                        var searcher = new ManagementObjectSearcher(scope, new ObjectQuery(query));
-                        foreach (ManagementObject obj in searcher.Get())
+                        foreach (ManagementObject obj in collection)
                         {
                             if (!columnsCreated)
                             {
@@ -744,42 +834,186 @@ namespace WpfApp3
                                 resultsTable.Columns.Add("Target");
                                 columnsCreated = true;
                             }
+
                             var row = resultsTable.NewRow();
                             foreach (PropertyData p in obj.Properties)
-                                row[p.Name] = obj[p.Name];
+                                row[p.Name] = obj[p.Name] ?? DBNull.Value;
                             row["Target"] = target;
                             resultsTable.Rows.Add(row);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Dispatcher.Invoke(() => System.Windows.MessageBox.Show($"Failed to query {target}: {ex.Message}"));
-                    }
-                });
-            }
+                }
+                catch (Exception ex)
+                {
+                    Dispatcher.Invoke(() =>
+                        MessageBox.Show($"Failed to query {target}:\n{ex.Message}")
+                    );
+                }
+            })).ToList();
+
+            await Task.WhenAll(tasks);
             dgWmiResults.ItemsSource = resultsTable.DefaultView;
         }
 
-        private void LoadSavedQueries()
+        // ------------------------
+        // 🔧 Utility Functions
+        // ------------------------
+
+        private bool IsSubnet(string input)
+        {
+            return input.Contains("/") && IPAddress.TryParse(input.Split('/')[0], out _);
+        }
+
+        private IEnumerable<string> ExpandCidr(string cidr)
+        {
+            var parts = cidr.Split('/');
+            var baseIp = IPAddress.Parse(parts[0]);
+            int prefix = int.Parse(parts[1]);
+            int max = 32 - prefix;
+            uint ip = BitConverter.ToUInt32(baseIp.GetAddressBytes().Reverse().ToArray(), 0);
+            uint count = (uint)(1 << max);
+
+            for (uint i = 1; i < count - 1; i++) // skip network and broadcast
+            {
+                var bytes = BitConverter.GetBytes(ip + i).Reverse().ToArray();
+                yield return new IPAddress(bytes).ToString();
+            }
+        }
+
+        private async Task<bool> PingHost(string host)
         {
             try
             {
-                Directory.CreateDirectory(QueriesDir);
-                var files = Directory.GetFiles(QueriesDir, "*.txt");
-                var names = files.Select(Path.GetFileName).ToList();
-                lb_savedQueries.ItemsSource = names;
+                using (var ping = new Ping())
+                {
+                    var reply = await ping.SendPingAsync(host, 500); // 500ms timeout
+                    return reply.Status == IPStatus.Success;
+                }
             }
-            catch { }
+            catch
+            {
+                return false;
+            }
         }
 
         private void btnLoadQuery_Click(object sender, RoutedEventArgs e)
         {
-            if (lb_savedQueries.SelectedItem is string file)
+            if (lb_savedQueries.SelectedItem is WmiQuery selected)
             {
-                string path = Path.Combine(QueriesDir, file);
-                if (File.Exists(path))
-                    txt_wmiQuery.Text = File.ReadAllText(path);
+
+                cb_WmiNamespace.SelectedValue = selected.Namespace;
+                cb_WmiClass.SelectedValue = selected.Class;
+                txt_wmiQuery.Text = selected.Data;
+            }
+
+        }
+        private void txt_wmiQuery_Loaded(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void TabItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+        {
+            txt_Target.Visibility = Visibility.Hidden;
+
+        }
+
+        private void TabItem_RequestBringIntoView_1(object sender, RequestBringIntoViewEventArgs e)
+        {
+            txt_Target.Visibility = Visibility.Visible;
+
+        }
+
+        private void TabItem_RequestBringIntoView_2(object sender, RequestBringIntoViewEventArgs e)
+        {
+            txt_Target.Visibility = Visibility.Visible;
+
+        }
+
+        private void lb_savedQueries_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lb_savedQueries.SelectedItem is SavedQuery selected)
+            {
+                txt_wmiQuery.Text = selected.Query;
             }
         }
+
+        private void txtWmiTargets_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private ObservableCollection<FileSystemItem> _allItems; // Store the full, unfiltered tree
+
+
+
+        private void search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string filterText = search.Text?.Trim() ?? string.Empty;
+            if (string.IsNullOrEmpty(filterText))
+            {
+                // Show all files (no folders) if search is empty
+                treeViewScripts.ItemsSource = FilterFilesOnly(_allItems);
+            }
+            else
+            {
+                treeViewScripts.ItemsSource = FilterTree(_allItems, filterText);
+            }
+        }
+
+        // Helper: returns only files (no folders) from the tree, flattening the structure
+        private ObservableCollection<FileSystemItem> FilterFilesOnly(IEnumerable<FileSystemItem> items)
+        {
+            var result = new ObservableCollection<FileSystemItem>();
+            foreach (var item in items)
+            {
+                if (item.IsDirectory && item.Children != null)
+                {
+                    foreach (var child in FilterFilesOnly(item.Children))
+                        result.Add(child);
+                }
+                else if (!item.IsDirectory)
+                {
+                    result.Add(item);
+                }
+            }
+            return result;
+        }
+        private ObservableCollection<FileSystemItem> FilterTree(IEnumerable<FileSystemItem> items, string filter)
+        {
+            var result = new ObservableCollection<FileSystemItem>();
+            if (items == null)
+                return result;
+
+            foreach (var item in items)
+            {
+                if (item.IsDirectory && item.Children != null)
+                {
+                    var filteredChildren = FilterTree(item.Children, filter);
+                    if (filteredChildren.Count > 0)
+                    {
+                        // Clone the folder, but only with matching children
+                        var folder = new FileSystemItem
+                        {
+                            Name = item.Name,
+                            FullPath = item.FullPath,
+                            IsDirectory = true,
+                            Children = filteredChildren
+                        };
+                        result.Add(folder);
+                    }
+                }
+                else if (!item.IsDirectory && item.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    result.Add(item);
+                }
+            }
+            return result;
+        }
+
+        private void treeViewScripts_Loaded(object sender, RoutedEventArgs e)
+        {
+
+
+        }
+
     }
 }

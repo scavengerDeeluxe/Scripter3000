@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace WpfApp3
+namespace ScriptArcade
 {
     /// <summary>
     /// Interaction logic for App.xaml

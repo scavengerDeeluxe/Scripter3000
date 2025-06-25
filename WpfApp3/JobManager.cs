@@ -6,7 +6,7 @@ using System.Threading;
 using System.Windows;
 
 
-namespace WpfApp3
+namespace ScriptArcade
 {
 public partial class MainWindow
     {

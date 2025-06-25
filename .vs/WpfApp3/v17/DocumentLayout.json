@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\WpfApp3.csproj|K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\wpfapp3\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\WpfApp3.csproj|solutionrelative:wpfapp3\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\ScriptArcade.csproj|k:\\users\\scav\\source\\repos\\scavengerdeeluxe\\scripter3000\\wpfapp3\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\ScriptArcade.csproj|solutionrelative:wpfapp3\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\WpfApp3.csproj|k:\\users\\scav\\source\\repos\\scavengerdeeluxe\\scripter3000\\wpfapp3\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\WpfApp3.csproj|solutionrelative:wpfapp3\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\ScriptArcade.csproj|K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\wpfapp3\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\ScriptArcade.csproj|solutionrelative:wpfapp3\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\WpfApp3.csproj|K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\wpfapp3\\jobmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\WpfApp3.csproj|solutionrelative:wpfapp3\\jobmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\ScriptArcade.csproj|K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\wpfapp3\\darktheme.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\ScriptArcade.csproj|solutionrelative:wpfapp3\\darktheme.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\ScriptArcade.csproj|K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\wpfapp3\\resources\\darktheme.xshd||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\ScriptArcade.csproj|solutionrelative:wpfapp3\\resources\\darktheme.xshd||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\WpfApp3.csproj|K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\wpfapp3\\packages.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{05B8949C-0158-4B85-9AA2-E03968677C03}|WpfApp3\\WpfApp3.csproj|solutionrelative:wpfapp3\\packages.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,43 +30,78 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 7,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "JobManager.cs",
-              "DocumentMoniker": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\JobManager.cs",
-              "RelativeDocumentMoniker": "WpfApp3\\JobManager.cs",
-              "ToolTip": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\JobManager.cs",
-              "RelativeToolTip": "WpfApp3\\JobManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T12:46:37.515Z"
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "WpfApp3\\MainWindow.xaml.cs",
-              "ToolTip": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\MainWindow.xaml.cs*",
-              "RelativeToolTip": "WpfApp3\\MainWindow.xaml.cs*",
-              "ViewState": "AgIAANQCAAAAAAAAAAAswA4DAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T12:41:16.922Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "App.xaml",
+              "DocumentMoniker": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\App.xaml",
+              "RelativeDocumentMoniker": "WpfApp3\\App.xaml",
+              "ToolTip": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\App.xaml",
+              "RelativeToolTip": "WpfApp3\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-06-25T20:01:32.579Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "darktheme.xshd",
+              "DocumentMoniker": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\Resources\\darktheme.xshd",
+              "RelativeDocumentMoniker": "WpfApp3\\Resources\\darktheme.xshd",
+              "ToolTip": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\Resources\\darktheme.xshd",
+              "RelativeToolTip": "WpfApp3\\Resources\\darktheme.xshd",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAABaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-06-25T20:01:17.039Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DarkTheme.xaml",
+              "DocumentMoniker": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\DarkTheme.xaml",
+              "RelativeDocumentMoniker": "WpfApp3\\DarkTheme.xaml",
+              "ToolTip": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\DarkTheme.xaml",
+              "RelativeToolTip": "WpfApp3\\DarkTheme.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-06-25T20:01:15.988Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "packages.config",
+              "DocumentMoniker": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\packages.config",
+              "RelativeDocumentMoniker": "WpfApp3\\packages.config",
+              "ToolTip": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\packages.config",
+              "RelativeToolTip": "WpfApp3\\packages.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2025-06-23T18:05:48.615Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\MainWindow.xaml",
               "RelativeDocumentMoniker": "WpfApp3\\MainWindow.xaml",
               "ToolTip": "K:\\users\\scav\\source\\repos\\scavengerDeeluxe\\Scripter3000\\WpfApp3\\MainWindow.xaml",
               "RelativeToolTip": "WpfApp3\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-06-20T12:26:18.096Z",
+              "WhenOpened": "2025-06-24T00:05:42.779Z",
               "EditorCaption": ""
             }
           ]
