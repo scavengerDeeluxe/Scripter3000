@@ -7,7 +7,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                     <!-- Updated the path to use a relative URI instead of an absolute path -->
-                <ResourceDictionary Source="DarkTheme.xaml"/>
+                <ResourceDictionary Source="/Resources/darkTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

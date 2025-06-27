@@ -7,7 +7,7 @@ namespace ScriptArcade
         public object GridData
         {
             get => gridPopout.ItemsSource;
-            set => gridPopout.ItemsSource = value;
+            set => gridPopout.ItemsSource = null;
         }
 
         public DataGridViewerWindow(object data)

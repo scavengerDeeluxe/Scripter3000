@@ -1,0 +1,40 @@
+[{
+        "Name": "Drivers",
+        "Namespace": "root\\cimv2",
+        "Class": "Win32_SystemDriver",
+        "Data": "SELECT DeviceName, Manufacturer, DriverVersion, DriverProviderName, InfName, DriverDate
+FROM Win32_PnPSignedDriver
+WHERE InfName LIKE 'oem%.inf'"
+      },
+	  { "Name": "BIOSinfo",
+        "Namespace": "root\\cimv2",
+        "Class": "Win32_BIOS",
+        "Data": "SELECT BIOSVersion, BuildNumber, InstallDate, Manufacturer, Name, SerialNumber, Status, Version
+FROM win32_BIOS"
+      },
+	  { "Name": "ComputerInfo",
+        "Namespace": "root\\cimv2",
+        "Class": "Win32_ComputerSystem",
+        "Data": "SELECT DNSHostName, Domain, Manufacterer, Model, NumberOfLogicalProcessors,TotalPhysicalMemory,Site
+FROM Win32_ComputerSystem"
+      },
+	  { "Name": "InstalledSoftware",
+       "Namespace": "root\\cimv2",
+        "Class": "Win32_Product",
+        "Data": "SELECT Name,Version,Caption,Description,Language,LocalPackage,PackageCode,PackageName,InstallDate,InstallSource
+FROM  win32_product "
+      },
+	  {        "Name": "OperatingSystemInfo",
+       "Namespace": "root\\cimv2",
+        "Class": "Win32_OperatingSystem",
+        "Data": "SELECT BootDevice,BuildNumber,BuildType,Caption,CodeSet,CountryCode,CreationClassName,CSCreationClassName,CSDVersion,CSName,CurrentTimeZone,DataExecutionPrevention_32BitApplications,DataExecutionPrevention_Available,DataExecutionPrevention_Drivers,DataExecutionPrevention_SupportPolicy,Debug,Description,Distributed,EncryptionLevel,ForegroundApplicationBoost,FreePhysicalMemory,FreeSpaceInPagingFiles,FreeVirtualMemory,InstallDate,LargeSystemCache,LastBootUpTime,LocalDateTime,Locale,Manufacturer,MaxNumberOfProcesses,MaxProcessMemorySize,MUILanguages,Name,NumberOfLicensedUsers,NumberOfProcesses,NumberOfUsers,OperatingSystemSKU,Organization,OSArchitecture,OSLanguage,OSProductSuite,OSType,OtherTypeDescription,PAEEnabled,PlusProductID,PlusVersionNumber,PortableOperatingSystem,Primary,ProductType,RegisteredUser,SerialNumber,ServicePackMajorVersion,ServicePackMinorVersion,SizeStoredInPagingFiles,Status,SuiteMask,SystemDevice,SystemDirectory,SystemDrive,TotalSwapSpaceSize,TotalVirtualMemorySize,TotalVisibleMemorySize
+		FROM win32_operatingSystem"
+ 
+      },
+	  {       "Name": "PNPDevices",
+       "Namespace": "root\\cimv2",
+        "Class": "Win32_PnPEntity",
+        "Data": "SELECT DeviceID, Caption,ClassGuid,CreationClassName,Description,Manufacturer,Name,PNPCLass,Prsent,Service,STatus,SystemName
+FROM win32_pnpentity"
+      }
+    ]

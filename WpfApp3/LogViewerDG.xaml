@@ -1,0 +1,26 @@
+﻿<Window  x:Class="ScriptArcade.LogViewDG"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Name="LogWindow" mc:Ignorable="av"
+        Title="LogViewDG" Height="450" Width="800">
+    <Grid>
+        <DockPanel LastChildFill="False">
+            <DockPanel.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="/Resources/TabControlStyle.xaml"/>
+                        <ResourceDictionary Source="/Resources/dgstyle.xaml"/>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </DockPanel.Resources>
+            <Grid Width="800">
+                <DataGrid x:Name="dataGrid" Margin="-2,0,1,0">
+                    <DataGrid.Background>
+                        <ImageBrush ImageSource="/Resources/e60fdf1f-3c21-4333-a1cb-6c65d3865f9d.png"/>
+                    </DataGrid.Background>
+                </DataGrid>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>

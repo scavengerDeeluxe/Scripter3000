@@ -6,156 +6,217 @@
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         xmlns:local="clr-namespace:ScriptArcade"
         mc:Ignorable="d"
-        Title="MainWindow" Height="958" Width="1060" Loaded="Window_Loaded" Icon="/8935fef4-1dd0-4ac2-9791-4240058fcc5d.png" ResizeMode="NoResize" Background="#FF272626" Style="{Binding Style.TargetType.GUID, ElementName=grid, Mode=Default}">
-    <Grid x:Name="Grid" Margin="0,0,3,0" Style="{DynamicResource DarkCardStyle}">
+        Title="MainWindow" Height="958" Width="1060" Loaded="Window_Loaded" Icon="/Resources/8935fef4-1dd0-4ac2-9791-4240058fcc5d.png" ResizeMode="NoResize" Background="#FF272626" Style="{Binding Style.TargetType.GUID, ElementName=grid, Mode=Default}">
+  <DockPanel LastChildFill="False" Margin="0,0,10,-6" d:LayoutOverrides="VerticalAlignment">
+    <DockPanel.Resources>
+      <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+          <ResourceDictionary Source="/Resources/TabControlStyle.xaml"/>
+          <ResourceDictionary Source="/Resources/dgstyle.xaml"/>
+        </ResourceDictionary.MergedDictionaries>
+      </ResourceDictionary>
+    </DockPanel.Resources>
+    <StackPanel Width="1052" RenderTransformOrigin="0.5,0.5">
+      <StackPanel.RenderTransform>
+        <TransformGroup>
+          <ScaleTransform ScaleX="-1"/>
+          <SkewTransform/>
+          <RotateTransform/>
+          <TranslateTransform/>
+        </TransformGroup>
+      </StackPanel.RenderTransform>
+      <Grid Height="66" RenderTransformOrigin="0.5,0.5" Width="1023">
+        <Grid.RenderTransform>
+          <TransformGroup>
+            <ScaleTransform ScaleX="-1"/>
+            <SkewTransform/>
+            <RotateTransform/>
+            <TranslateTransform/>
+          </TransformGroup>
+        </Grid.RenderTransform>
+        <Grid x:Name="targetsGV" RenderTransformOrigin="0.501,0.68" OpacityMask="Black" Background="#FF373737" Style="{DynamicResource DarkCardStyle}" Height="56" Margin="208,10,140,0" d:LayoutOverrides="VerticalAlignment">
+          <Grid.RenderTransform>
+            <TransformGroup>
+              <ScaleTransform ScaleX="1"/>
+              <SkewTransform/>
+              <RotateTransform/>
+              <TranslateTransform/>
+            </TransformGroup>
+          </Grid.RenderTransform>
+          <TextBlock TextWrapping="Wrap" Margin="24,10,500,10" FontSize="22" FontWeight="Bold" Foreground="#FF36FAFF">
+            <Run Text="TargetPC"/>
+            <LineBreak/>
+            <Run/>
+          </TextBlock>
+          <TextBox x:Name="txt_Target" TextWrapping="Wrap" Margin="156,10,191,10" AutomationProperties.Name="TargetPC" FontSize="16" FontWeight="Bold"/>
+          <Button x:Name="btnTestConnection" Content="Ping Test" HorizontalAlignment="Left" Margin="565,10,0,0" VerticalAlignment="Top" Click="TestConnection_Click" Width="94" Height="23"/>
+        </Grid>
+        <Image HorizontalAlignment="Left" Margin="883,8,0,-44" Width="141" Source="/Resources/8935fef4-1dd0-4ac2-9791-4240058fcc5d.ico"/>
+        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="56,27,0,0" VerticalAlignment="Top" Click="button_Click"/>
+      </Grid>
+      <Grid Height="840" RenderTransformOrigin="0.5,0.5" Width="1026">
+        <Grid.RenderTransform>
+          <TransformGroup>
+            <ScaleTransform ScaleX="-1"/>
+            <SkewTransform/>
+            <RotateTransform/>
+            <TranslateTransform/>
+          </TransformGroup>
+        </Grid.RenderTransform>
+        <TabControl Foreground="#FFFFD339" Margin="0,10,0,10">
+          <TabControl.Background>
+            <ImageBrush ImageSource="/Resources/e60fdf1f-3c21-4333-a1cb-6c65d3865f9d.png"/>
+          </TabControl.Background>
 
-        <Grid Height="588" VerticalAlignment="Top" Loaded="Grid_Loaded" Background="#FF383838" Style="{DynamicResource DarkCardStyle}">
+          <TabItem IsSelected="True" Header="Scripts" FontFamily="Trebuchet MS" FontWeight="Bold" FontSize="24" RequestBringIntoView="TabItem_RequestBringIntoView_2">
+            <Grid  Background="#FF545353" Height="784" Margin="0,0,1,0" Style="{DynamicResource DarkCardStyle}">
 
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+              </Grid.ColumnDefinitions>
+              <DataGrid x:Name="dg_logs" Margin="11,467,22,14" ItemsSource="{Binding SharedText, UpdateSourceTrigger=PropertyChanged}" Loaded="dg_logs_Loaded">
+                <Paragraph/>
+              </DataGrid>
+              <TreeView x:Name="treeViewScripts" FontFamily="Trebuchet MS" FontSize="16" Margin="10,61,0,345" Background="#FFB1B1B1" MouseDoubleClick="treeViewScripts_MouseDoubleClick" HorizontalAlignment="Left" Width="280" Loaded="treeViewScripts_Loaded">
+                <TreeView.ItemTemplate>
+                  <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Name}" />
+                  </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+              </TreeView>
+              <Button Click="Button_Click_1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" Width="82" FontSize="16" Content="EXECUTE" FontFamily="Trebuchet MS" FontWeight="Bold" Margin="580,426,0,0"/>
+              <Button x:Name="OpenScriptPopout" Content="View Script" Click="OpenScriptPopout_Click_1" RenderTransformOrigin="0.467,0.429" FontSize="16" Panel.ZIndex="4" FontFamily="Trebuchet MS" FontWeight="DemiBold" Height="33" Margin="320,428,584,323"/>
+              <StackPanel Margin="0,0,0,333"/>
+              <Grid Margin="673,28,33,340" Style="{DynamicResource DarkCardStyle}" >
 
-            <Grid RenderTransformOrigin="0.501,0.68" Margin="211,10,206,526" OpacityMask="Black" Background="#FF373737" Style="{DynamicResource DarkCardStyle}">
-                <TextBlock TextWrapping="Wrap" Margin="24,10,500,10" FontSize="22" FontWeight="Bold" Foreground="#FF36FAFF"><Run Text="TargetPC"/><LineBreak/><Run/></TextBlock>
-                <TextBox x:Name="txt_Target" TextWrapping="Wrap" Margin="156,10,191,10" AutomationProperties.Name="TargetPC" FontSize="16" FontWeight="Bold">
-
-                </TextBox>
-                <Button x:Name="btnTestConnection" Content="Test Conn" HorizontalAlignment="Left" Margin="474,0,0,0" VerticalAlignment="Center" Click="TestConnection_Click" Height="33" Width="72"/>
+                <Button x:Name="OpenScriptLogs" Content="Pop-Out&#xA;Logs" Click="OpenLogsPopou" FontSize="16" FontFamily="Trebuchet MS" FontWeight="Bold" Height="45" Margin="17,9,214,362"/>
+                <Button x:Name="SaveScript" Content="Save &#xA;Script" Margin="530,-226,-470,613" Click="SaveScript_Click" IsEnabled="False" Visibility="Hidden"/>
+                <ListView x:Name="lsv_jobs" SelectionChanged="lsv_jobs_SelectionChanged" ItemsSource="{Binding Jobs}" Margin="12,62,12,40" FontSize="16" d:ItemsSource="{d:SampleData ItemCount=5}">
+                  <ListView.View>
+                    <GridView>
+                      <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" />
+                      <GridViewColumn Header="Script" DisplayMemberBinding="{Binding ScriptName}" />
+                      <GridViewColumn Header="Target" DisplayMemberBinding="{Binding TargetPC}" />
+                    </GridView>
+                  </ListView.View>
+                </ListView>
+              </Grid>
+              <TextBox x:Name="search" HorizontalAlignment="Left" Foreground="#FFE9FF22"  Height="31" Margin="83,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="195" FontSize="18" TextAlignment="Center" TextChanged="search_TextChanged"/>
+              <Label Content="Search" HorizontalAlignment="Left" Foreground="Cyan" Height="34" Margin="11,14,0,0" VerticalAlignment="Top" Width="79" FontSize="18"/>
+              <avalonEdit:TextEditor  x:Name="editorScript" ShowLineNumbers="True" SyntaxHighlighting="MonokaiSoda" Background="#121212"  Foreground="#00ffff" FontFamily="Consolas" BorderBrush="#00ffff" FontSize="14" Margin="0,0,347,364" UseLayoutRounding="True"  LostFocus="editorScript_LostFocus" Height="404" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="362" />
+              <RichTextBox x:Name="editorLogs" Margin="0,466,-8,8" Foreground="#FF53FDCA" FontSize="11" TextChanged="richTextBox_TextChanged" Visibility="Hidden">
+                <RichTextBox.Background>
+                  <ImageBrush ImageSource="/Resources/e60fdf1f-3c21-4333-a1cb-6c65d3865f9d.png"/>
+                </RichTextBox.Background>
+                <FlowDocument>
+                  <Paragraph>
+                    <Run Text=""/>
+                  </Paragraph>
+                </FlowDocument>
+              </RichTextBox>
             </Grid>
-
-
-
-            <TabControl Margin="5,68,25,-346" Foreground="#FFFFD339">
-                <TabControl.Background>
-                    <ImageBrush ImageSource="/e60fdf1f-3c21-4333-a1cb-6c65d3865f9d.png"/>
-                </TabControl.Background>
-
-                <TabItem AutomationProperties.IsOffscreenBehavior="Onscreen" IsSelected="False" Header="Scripts" FontFamily="Trebuchet MS" FontWeight="Bold" FontSize="24" RequestBringIntoView="TabItem_RequestBringIntoView_2" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" BorderThickness="2,2,2,2">
-
-                    <Grid  Background="#FF545353" Height="824" Margin="3,0,-8,0" Style="{DynamicResource DarkCardStyle}">
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="46*"/>
-                            <ColumnDefinition Width="147*"/>
-                            <ColumnDefinition Width="833*"/>
-                        </Grid.ColumnDefinitions>
-                        <TreeView x:Name="treeViewScripts" FontFamily="Trebuchet MS" FontSize="16" Margin="8,45,0,361" Background="#FFB1B1B1" MouseDoubleClick="treeViewScripts_MouseDoubleClick" HorizontalAlignment="Left" Width="280" Loaded="treeViewScripts_Loaded" Grid.ColumnSpan="3">
-                            <TreeView.ItemTemplate>
-                                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                                    <TextBlock Text="{Binding Name}" />
-                                </HierarchicalDataTemplate>
-                            </TreeView.ItemTemplate>
-                        </TreeView>
-                        <GridSplitter Width="5" Margin="0,485,0,-158" Grid.Column="2"/>
-                        <Button Click="Button_Click_1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" Width="82" FontSize="16" Content="EXECUTE" FontFamily="Trebuchet MS" FontWeight="Bold" Margin="412,430,0,0" Grid.Column="2"/>
-                        <Button x:Name="OpenScriptPopout" Content="View Script" Click="OpenScriptPopout_Click_1" RenderTransformOrigin="0.467,0.429" FontSize="16" Panel.ZIndex="4" FontFamily="Trebuchet MS" FontWeight="DemiBold" Height="33" Margin="150,430,564,361" Grid.Column="2"/>
-                        <StackPanel Margin="0,0,0,333" Grid.ColumnSpan="3"/>
-                        <Grid Margin="518,2,-2,366" Grid.Column="2" Style="{DynamicResource DarkCardStyle}" >
-
-                            <Button x:Name="OpenScriptLogs" Content="Pop-Out&#xA;Logs" Click="OpenLogsPopou" FontSize="16" FontFamily="Trebuchet MS" FontWeight="Bold" Height="45" Margin="10,10,221,401"/>
-                            <Button x:Name="SaveScript" Content="Save &#xA;Script" Margin="530,-226,-470,613" Click="SaveScript_Click" IsEnabled="False" Visibility="Hidden"/>
-                            <ListView x:Name="lsv_jobs" SelectionChanged="lsv_jobs_SelectionChanged" ItemsSource="{Binding Jobs}" Margin="12,70,13,10" FontSize="16" d:ItemsSource="{d:SampleData ItemCount=5}">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" />
-                                        <GridViewColumn Header="Script" DisplayMemberBinding="{Binding ScriptName}" />
-                                        <GridViewColumn Header="Target" DisplayMemberBinding="{Binding TargetPC}" />
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </Grid>
-                        <RichTextBox x:Name="editorLogs" FontFamily="Consolas" Foreground="#FF44C7A0" Margin="10,467,22,14" FontSize="14" Grid.ColumnSpan="3" >
-                            <RichTextBox.Background>
-                                <ImageBrush ImageSource="e60fdf1f-3c21-4333-a1cb-6c65d3865f9d.png"/>
-                            </RichTextBox.Background>
-                            <FlowDocument>
-                                <Paragraph/>
-                            </FlowDocument>
-                        </RichTextBox>
-                        <avalonEdit:TextEditor  x:Name="editorScript" ShowLineNumbers="True" SyntaxHighlighting="PowerShell" Background="#121212"  Foreground="#00ffff" FontFamily="Consolas" BorderBrush="#00ffff" FontSize="14" Margin="0,0,308,412" UseLayoutRounding="True" LostFocus="editorScript_LostFocus" Height="402" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="379" Grid.Column="2" >
-                            <avalonEdit:TextEditor.RenderTransform>
-                                <TransformGroup>
-                                </TransformGroup>
-                            </avalonEdit:TextEditor.RenderTransform>
-                        </avalonEdit:TextEditor>
-                        <DataGrid x:Name="dg_logs" HorizontalAlignment="Left" Height="352" Margin="35,458,0,0" VerticalAlignment="Top" Width="952" d:ItemsSource="{d:SampleData ItemCount=5}" FontSize="14" FontWeight="Normal" Visibility="Hidden" Grid.ColumnSpan="3"/>
-                        <TextBox x:Name="search" HorizontalAlignment="Left" Height="31" Margin="64,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="195" FontSize="18" TextAlignment="Center" TextChanged="search_TextChanged" Grid.Column="1" Grid.ColumnSpan="2"/>
-                        <Label Content="Search" HorizontalAlignment="Left" Height="34" Margin="11,6,0,0" VerticalAlignment="Top" Width="92" FontSize="18" Grid.ColumnSpan="2"/>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="Tasks" FontFamily="Trebuchet MS" FontSize="24" FontWeight="DemiBold" RequestBringIntoView="TabItem_RequestBringIntoView_1" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" BorderThickness="2,2,2,2">
-                    <DockPanel LastChildFill="False" Height="822" Margin="-4,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="1024">
-                        <ListView x:Name="lsv_adminTools"
+          </TabItem>
+          <TabItem Header="Tasks" FontFamily="Trebuchet MS" FontSize="24" FontWeight="DemiBold" RequestBringIntoView="TabItem_RequestBringIntoView_1" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" BorderThickness="2,2,2,2" Margin="0,-2,-18,0" Foreground="Cyan">
+            <TabItem.Background>
+              <LinearGradientBrush EndPoint="0,1">
+                <GradientStop Color="Black" Offset="0.081"/>
+                <GradientStop Color="#FF4E4D4D" Offset="1"/>
+              </LinearGradientBrush>
+            </TabItem.Background>
+            <DockPanel LastChildFill="False" Height="822" Margin="-4,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="1024">
+              <ListView x:Name="lsv_adminTools"
          SelectionChanged="lsv_adminTools_SelectionChanged"
          DisplayMemberPath="Name"
          IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding tools}" FontSize="18" Background="#FF545353" Foreground="#FFD7FFF5" SnapsToDevicePixels="True" SelectionMode="Single" Width="324" Height="474" />
-                    </DockPanel>
-                </TabItem>
-                <TabItem Margin="-2,-2,-29,0" Header="WMI" Tag="WMI MultiQ" FontFamily="Trebuchet MS" FontSize="24" FontWeight="DemiBold" RequestBringIntoView="TabItem_RequestBringIntoView" BorderThickness="2,2,2,2" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}">
-                    <Grid Style="{DynamicResource DarkCardStyle}" Background="{x:Null}">
-                        <Label Content="* Denotes Required" Margin="274,276,573,507" FontSize="12"/>
+            </DockPanel>
+          </TabItem>
+          <TabItem Margin="23,-2,-41,0" Header="WMI" Tag="WMI MultiQ" FontFamily="Trebuchet MS" FontSize="24" FontWeight="DemiBold" RequestBringIntoView="TabItem_RequestBringIntoView" BorderThickness="2,2,2,2" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" d:LayoutOverrides="HorizontalAlignment">
+            <TabItem.Foreground>
+              <SolidColorBrush Color="Cyan"/>
+            </TabItem.Foreground>
+            <TabItem.Background>
+              <LinearGradientBrush EndPoint="0,1">
+                <GradientStop Color="Black"/>
+                <GradientStop Color="#FF4E4D4D" Offset="1"/>
+              </LinearGradientBrush>
+            </TabItem.Background>
+            <Grid Style="{DynamicResource DarkCardStyle}" Background="{x:Null}">
+              <Label Content="* Denotes Required" Margin="274,276,573,507" FontSize="12"/>
 
-                        <TextBox x:Name="txtWmiTargets" TextWrapping="Wrap" AcceptsReturn="True" Margin="30,114,839,531" FontSize="12"/>
-                        <Label Content="Targets" HorizontalAlignment="Left" Margin="52,20,0,0" VerticalAlignment="Top" Width="108" Foreground="#FFE9FF22"/>
+              <TextBox x:Name="txtWmiTargets" TextWrapping="Wrap" AcceptsReturn="True" Margin="30,99,839,462" FontSize="12"/>
+              <Label Content="Targets" HorizontalAlignment="Left" Margin="23,2,0,0" VerticalAlignment="Top" Width="108" Foreground="#FFE9FF22"/>
 
-                        <Label Content="*Namespace" HorizontalAlignment="Left" Margin="239,16,0,0" VerticalAlignment="Top" Width="88" RenderTransformOrigin="0.5,0.5" FontSize="14" Foreground="#FFE9FF22"/>
-                        <ComboBox x:Name="cb_WmiNamespace" HorizontalAlignment="Left" Margin="332,14,0,0" VerticalAlignment="Top" Width="337" SelectionChanged="cb_WmiNamespace_SelectionChanged" Height="31" FontSize="14"/>
+              <Label Content="*Namespace" HorizontalAlignment="Left" Margin="239,16,0,0" VerticalAlignment="Top" Width="88" RenderTransformOrigin="0.5,0.5" FontSize="14" Foreground="#FFE9FF22"/>
+              <ComboBox x:Name="cb_WmiNamespace" HorizontalAlignment="Left" Margin="332,14,0,0" VerticalAlignment="Top" Width="337" SelectionChanged="cb_WmiNamespace_SelectionChanged" Height="31" FontSize="14"/>
 
-                        <Label Content="*Class" HorizontalAlignment="Left" Margin="260,55,0,0" VerticalAlignment="Top" Width="61" FontSize="14" Foreground="#FFE9FF22"/>
-                        <ComboBox x:Name="cb_WmiClass" HorizontalAlignment="Left" Margin="334,58,0,0" VerticalAlignment="Top" Width="331" SelectionChanged="cb_WmiClass_SelectionChanged" FontSize="13"/>
+              <Label Content="*Class" HorizontalAlignment="Left" Margin="260,55,0,0" VerticalAlignment="Top" Width="61" FontSize="14" Foreground="#FFE9FF22"/>
+              <ComboBox x:Name="cb_WmiClass" HorizontalAlignment="Left" Margin="334,58,0,0" VerticalAlignment="Top" Width="331" SelectionChanged="cb_WmiClass_SelectionChanged" FontSize="13"/>
 
-                        <Label Content="Properties" HorizontalAlignment="Left" Margin="253,93,0,0" VerticalAlignment="Top" Width="78" FontSize="14" Foreground="#FFE9FF22"/>
-                        <ListBox x:Name="lb_WmiProperties" HorizontalAlignment="Left" Margin="341,87,0,0" VerticalAlignment="Top" Width="323" Height="70" SelectionMode="Extended" FontSize="12"/>
-                        <Button x:Name="btnBuildWmiQuery" Content="Build" HorizontalAlignment="Left" Margin="389,162,0,0" VerticalAlignment="Top" Height="40" Width="72" Click="btnBuildWmiQuery_Click" FontSize="14"/>
+              <Label Content="Properties" HorizontalAlignment="Left" Margin="253,93,0,0" VerticalAlignment="Top" Width="78" FontSize="14" Foreground="#FFE9FF22"/>
+              <ListBox x:Name="lb_WmiProperties" HorizontalAlignment="Left" Margin="341,87,0,0" VerticalAlignment="Top" Width="323" Height="70" SelectionMode="Extended" FontSize="12"/>
+              <Button x:Name="btnBuildWmiQuery" Content="Build" HorizontalAlignment="Left" Margin="389,162,0,0" VerticalAlignment="Top" Height="40" Width="72" Click="btnBuildWmiQuery_Click" FontSize="14"/>
 
-                        <Label Content="Query" HorizontalAlignment="Left" Margin="274,203,0,0" VerticalAlignment="Top" Width="66" FontSize="14" Foreground="#FFE9FF22"/>
-                        <TextBox x:Name="txt_wmiQuery" HorizontalAlignment="Left" Height="33" Margin="274,234,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="514" FontSize="12"/>
+              <Label Content="Query" HorizontalAlignment="Left" Margin="248,235,0,0" VerticalAlignment="Top" Width="66" FontSize="14" Foreground="#FFE9FF22"/>
+              <TextBox x:Name="txt_wmiQuery" HorizontalAlignment="Left" Height="33" Margin="321,234,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="514" FontSize="12"/>
 
-                        <Button x:Name="btnRunWmiQuery" Content="Query" HorizontalAlignment="Left" Height="19" Margin="807,236,0,0" VerticalAlignment="Top" Width="69" FontSize="13" Click="btnRunWmiQuery_Click"/>
-                        <Button x:Name="btnAbortWmiQuery" Content="Abort" HorizontalAlignment="Left" Height="20" Margin="207,240,0,0" VerticalAlignment="Top" Width="45" FontSize="13"/>
+              <Button x:Name="btnRunWmiQuery" Content="Query" HorizontalAlignment="Left" Height="26" Margin="846,236,0,0" VerticalAlignment="Top" Width="76" FontSize="13" Click="btnRunWmiQuery_Click"/>
+              <Button x:Name="btnAbortWmiQuery" Content="Abort" HorizontalAlignment="Left" Height="20" Margin="847,267,0,0" VerticalAlignment="Top" Width="45" FontSize="13"/>
 
-                        <ListBox x:Name="lb_savedQueries" HorizontalAlignment="Left" Height="147" Margin="698,36,0,0" VerticalAlignment="Top" Width="168" FontSize="10" SelectionChanged="lb_savedQueries_SelectionChanged"/>
-                        <Button x:Name="btnLoadQuery" Content="Load" HorizontalAlignment="Left" Height="24" Margin="818,186,0,0" VerticalAlignment="Top" Width="48" FontSize="13" Click="btnLoadQuery_Click"/>
-                        <Button x:Name="btnPopoutWmi" Content="Pop-Out Results" HorizontalAlignment="Left" Height="24" Margin="698,186,0,0" VerticalAlignment="Top" Width="110" FontSize="13" Click="OpenWmiResultsPopout_Click"/>
-                        <DataGrid x:Name="dgWmiResults" HorizontalAlignment="Center" Height="500" Margin="0,307,0,0" VerticalAlignment="Top" Width="973" FontSize="13" Panel.ZIndex="6" Foreground="#FFFFEE33">
-                            <DataGrid.Background>
-                                <ImageBrush ImageSource="e60fdf1f-3c21-4333-a1cb-6c65d3865f9d.png"/>
-                            </DataGrid.Background>
-                        </DataGrid>
-                        <Label Content="line sperated IPs or CIDR&#xD;&#xA;eg 192.168.0.0/24" Margin="10,59,819,697" FontSize="14" FontStyle="Italic" FontWeight="Bold" Foreground="#FFE9FF22"/>
-                    </Grid>
-                </TabItem>
+              <ListBox x:Name="lb_savedQueries" HorizontalAlignment="Left" Height="182" Margin="698,1,0,0" VerticalAlignment="Top" Width="168" FontSize="10" SelectionChanged="lb_savedQueries_SelectionChanged"/>
+              <Button x:Name="btnLoadQuery" Content="Load" HorizontalAlignment="Left" Height="24" Margin="818,193,0,0" VerticalAlignment="Top" Width="48" FontSize="13" Click="btnLoadQuery_Click"/>
+              <DataGrid x:Name="dgWmiResults" HorizontalAlignment="Center" Height="453" Margin="0,307,0,0" VerticalAlignment="Top" Width="973" FontSize="13" Panel.ZIndex="6" Foreground="#FFFFEE33">
+                <DataGrid.Background>
+                  <ImageBrush ImageSource="/Resources/e60fdf1f-3c21-4333-a1cb-6c65d3865f9d.png"/>
+                </DataGrid.Background>
+              </DataGrid>
+              <Label Content="line sperated IPs or CIDR&#xA;eg 192.168.0.0/24" Margin="20,40,801,669" FontSize="14"  FontStyle="Italic" FontWeight="Bold" Foreground="#FFE9FF22" RenderTransformOrigin="0.5,0.5">
+                <Label.RenderTransform>
+                  <TransformGroup>
+                    <ScaleTransform ScaleY="1" ScaleX="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                  </TransformGroup>
+                </Label.RenderTransform>
+              </Label>
+            </Grid>
+          </TabItem>
 
-            </TabControl>
-            <Image HorizontalAlignment="Left" Height="86" Margin="947,10,0,0" VerticalAlignment="Top" Width="85" Source="/8935fef4-1dd0-4ac2-9791-4240058fcc5d.png"/>
-        </Grid>
+        </TabControl>
+      </Grid>
+    </StackPanel>
+  </DockPanel>
 
-    </Grid>
-    <Window.Resources>
-        <ImageBrush x:Key="CyberWaveBrush" ImageSource="e60fdf1f-3c21-4333-a1cb-6c65d3865f9d.pnge60fdf1f-3c21-4333-a1cb-6c65d3865f9d.png" Stretch="UniformToFill" />
+  <Window.Resources>
+    <ImageBrush x:Key="CyberWaveBrush" ImageSource="/Resources/e60fdf1f-3c21-4333-a1cb-6c65d3865f9d.png" Stretch="UniformToFill" />
 
-        <Style x:Key="DarkCardStyle" TargetType="Grid">
-            <Setter Property="Background" Value="#111111" />
-            <Setter Property="Margin" Value="10" />
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect Color="#00ffff" BlurRadius="10" ShadowDepth="0" Opacity="0.15"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
+    <Style x:Key="DarkCardStyle" TargetType="Grid">
+      <Setter Property="Background" Value="#111111" />
+      <Setter Property="Margin" Value="10" />
+      <Setter Property="Effect">
+        <Setter.Value>
+          <DropShadowEffect Color="#00ffff" BlurRadius="10" ShadowDepth="0" Opacity="0.15"/>
+        </Setter.Value>
+      </Setter>
+    </Style>
 
-        <Style TargetType="Button">
-            <Setter Property="Background" Value="#222" />
-            <Setter Property="Foreground" Value="#00ffff" />
-            <Setter Property="FontFamily" Value="Segoe UI" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="BorderBrush" Value="#00ffff" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="5,2" />
-        </Style>
+    <Style TargetType="Button">
+      <Setter Property="Background" Value="#222" />
+      <Setter Property="Foreground" Value="#00ffff" />
+      <Setter Property="FontFamily" Value="Segoe UI" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="BorderBrush" Value="#00ffff" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Padding" Value="5,2" />
+    </Style>
 
-        <Style TargetType="TextBox">
-            <Setter Property="Background" Value="#1c1c1c"/>
-            <Setter Property="Foreground" Value="#e0ffff"/>
-            <Setter Property="BorderBrush" Value="#00ffff"/>
-            <Setter Property="FontFamily" Value="Consolas"/>
-        </Style>
-    </Window.Resources>
+    <Style TargetType="TextBox">
+      <Setter Property="Background" Value="#1c1c1c"/>
+      <Setter Property="Foreground" Value="#e0ffff"/>
+      <Setter Property="BorderBrush" Value="#00ffff"/>
+      <Setter Property="FontFamily" Value="Consolas"/>
+    </Style>
+  </Window.Resources>
+
 </Window>
+

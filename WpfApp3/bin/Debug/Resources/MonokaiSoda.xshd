@@ -1,0 +1,33 @@
+<SyntaxDefinition name="PowerShell" extensions=".ps1" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  <Color name="Default" foreground="#f8f8f2" background="#272822" />
+  <Color name="Comment" foreground="#75715e" />
+  <Color name="Keyword" foreground="#66d9ef" fontWeight="bold" />
+  <Color name="String" foreground="#e6db74" />
+  <Color name="Number" foreground="#ae81ff" />
+  <Color name="Operator" foreground="#f92672" />
+  <Color name="Variable" foreground="#fd971f" />
+  <Color name="FunctionCall" foreground="#a6e22e" />
+  <Color name="Email" foreground="#BD93F9" fontWeight="bold"/>
+  <Color name="Hyperlink" foreground="#FF79C6"/>
+
+  <RuleSet>
+    <Span color="Comment" begin="#" end="\n" />
+    <Span color="String" begin="&quot;" end="&quot;" />
+    <Keywords color="Keyword">
+      <Word>param</Word>
+      <Word>function</Word>
+      <Word>if</Word>
+      <Word>else</Word>
+      <Word>return</Word>
+      <Word>switch</Word>
+      <Word>foreach</Word>
+      <Word>break</Word>
+    </Keywords>
+    <Rule color="Number">\b\d+(\.\d+)?\b</Rule>
+    <Rule color="Operator">[-+*/=&lt;&gt;!]+</Rule>
+    <Rule color="Variable">\$\w+</Rule>
+    <Rule color="FunctionCall">\b\w+(?=\()</Rule>
+    <Rule color="Email">\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b</Rule>
+
+  </RuleSet>
+</SyntaxDefinition>
