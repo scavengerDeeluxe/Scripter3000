@@ -113,6 +113,7 @@
 
                         <ListBox x:Name="lb_savedQueries" HorizontalAlignment="Left" Height="147" Margin="698,36,0,0" VerticalAlignment="Top" Width="168" FontSize="10" SelectionChanged="lb_savedQueries_SelectionChanged"/>
                         <Button x:Name="btnLoadQuery" Content="Load" HorizontalAlignment="Left" Height="24" Margin="818,186,0,0" VerticalAlignment="Top" Width="48" FontSize="13" Click="btnLoadQuery_Click"/>
+                        <Button x:Name="btnPopoutWmi" Content="Pop-Out Results" HorizontalAlignment="Left" Height="24" Margin="698,186,0,0" VerticalAlignment="Top" Width="110" FontSize="13" Click="OpenWmiResultsPopout_Click"/>
                         <DataGrid x:Name="dgWmiResults" HorizontalAlignment="Center" Height="500" Margin="0,307,0,0" VerticalAlignment="Top" Width="973" FontSize="13" Panel.ZIndex="6" Foreground="#FFFFEE33">
                             <DataGrid.Background>
                                 <ImageBrush ImageSource="e60fdf1f-3c21-4333-a1cb-6c65d3865f9d.png"/>
