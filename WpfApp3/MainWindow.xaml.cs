@@ -205,45 +205,14 @@ namespace ScriptArcade
 
                     job.Status = "Running";
 
-                    var watcher = new FileSystemWatcher(Path.GetDirectoryName(logPath), Path.GetFileName(logPath));
-                    watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;
-                    watcher.Changed += (s, args) =>
-                    {
-                        try
-                        {
-                            var text = File.ReadAllText(logPath);
-                            Dispatcher.Invoke(() =>
-                            {
-                                job.Log = text;
-                                if (lsv_jobs.SelectedItem == job)
-                                {
-                                    editorLogs.Document.Blocks.Clear();
-                                    editorLogs.AppendText(text);
-                                }
-                            });
-                        }
-                        catch { }
-                    };
+                    _ = Task.Run(() => MonitorLogFile(job));
 
-                    job.Watcher = watcher;
-                    watcher.EnableRaisingEvents = true;
-
-                    while (!job.Cancellation.Token.IsCancellationRequested)
+                    while (!job.Cancellation.Token.IsCancellationRequested && IsRemoteProcessRunning(job))
                     {
                         Thread.Sleep(500);
                     }
 
-                    watcher.EnableRaisingEvents = false;
-                    watcher.Dispose();
-                    job.Status = "Cancelled";
-                    job.Cancellation.Token.Register(() =>
-                    {
-                        if (job.Watcher != null)
-                        {
-                            job.Watcher.EnableRaisingEvents = false;
-                            job.Watcher.Dispose();
-                        }
-                    });
+                    job.Status = job.Cancellation.Token.IsCancellationRequested ? "Cancelled" : "Completed";
                 }
                 catch (Exception ex)
                 {
@@ -349,26 +318,7 @@ namespace ScriptArcade
         {
             if (lsv_jobs.SelectedItem is RemoteJob job)
             {
-                if (IsStructuredData(job.Log, out var tableData))
-                {
-                    dg_logs.ItemsSource = tableData.DefaultView;
-                    dg_logs.Visibility = Visibility.Visible;
-                    editorLogs.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    dg_logs.IsEnabled = false;
-                    dg_logs.Visibility = Visibility.Collapsed;
-                    // Fallback to plain text display
-                    editorLogs.IsEnabled = true;
-                    editorLogs.Visibility = Visibility.Visible;
-                    editorLogs.Document.Blocks.Clear();
-                    editorLogs.AppendText(job.Log);
-                }
-
-
-
-
+                DisplayJobLog(job);
             }
         }
         private void CancelJob_Click(object sender, RoutedEventArgs e)
@@ -556,15 +506,7 @@ namespace ScriptArcade
         {
             if (lsv_jobs.SelectedItem is RemoteJob selectedJob)
             {
-                string log = selectedJob.Log ?? "No log output yet.";
-
-                var table = ParseFormattedTable(log);
-                LoadTableTextToWpfGrid(dg_logs, log);
-
-                var cleaned = log.Trim();
-
-                editorLogs.Document.Blocks.Clear();
-                editorLogs.AppendText(cleaned);
+                DisplayJobLog(selectedJob);
             }
         }
         private void LoadTableTextToWpfGrid(System.Windows.Controls.DataGrid grid, string rawText)
@@ -609,6 +551,56 @@ namespace ScriptArcade
             }
 
             return table;
+        }
+
+        private void DisplayJobLog(RemoteJob job)
+        {
+            if (IsStructuredData(job.Log, out var tableData))
+            {
+                dg_logs.ItemsSource = tableData.DefaultView;
+                dg_logs.Visibility = Visibility.Visible;
+                editorLogs.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                dg_logs.ItemsSource = null;
+                dg_logs.Visibility = Visibility.Collapsed;
+                editorLogs.Visibility = Visibility.Visible;
+                editorLogs.Document.Blocks.Clear();
+                editorLogs.AppendText(job.Log ?? string.Empty);
+            }
+        }
+
+        private void MonitorLogFile(RemoteJob job)
+        {
+            string logPath = job.LogPath;
+            string last = string.Empty;
+
+            while (!job.Cancellation.Token.IsCancellationRequested && job.Status == "Running")
+            {
+                try
+                {
+                    if (File.Exists(logPath))
+                    {
+                        var text = File.ReadAllText(logPath);
+                        if (text != last)
+                        {
+                            last = text;
+                            Dispatcher.Invoke(() =>
+                            {
+                                job.Log = text;
+                                if (lsv_jobs.SelectedItem == job)
+                                {
+                                    DisplayJobLog(job);
+                                }
+                            });
+                        }
+                    }
+                }
+                catch { }
+
+                Thread.Sleep(1000);
+            }
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
