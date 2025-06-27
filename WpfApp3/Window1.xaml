@@ -5,12 +5,13 @@
         Title="Script Editor" Height="450" Width="800">
     <Grid>
         <avalonEdit:TextEditor x:Name="editorPopout"
+                               Text="{Binding ScriptText, UpdateSourceTrigger=PropertyChanged}"
                                FontFamily="Consolas"
                                FontSize="14"
                                ShowLineNumbers="True"
                                HorizontalScrollBarVisibility="Auto"
-                               VerticalScrollBarVisibility="Auto" TabIndex="2147483642" WordWrap="True"
-                               />
+                               VerticalScrollBarVisibility="Auto"
+                               TabIndex="2147483642" WordWrap="True" />
         <Button Content="Save and Close" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"
                 Click="SaveAndClose_Click"/>
     </Grid>
