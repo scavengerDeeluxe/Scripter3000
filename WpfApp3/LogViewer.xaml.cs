@@ -19,24 +19,17 @@ namespace ScriptArcade
     /// </summary>
     public partial class LogViewerWindow : Window
     {
-        public static readonly DependencyProperty LogTextProperty =
-            DependencyProperty.Register(nameof(LogText), typeof(string), typeof(LogViewerWindow), new PropertyMetadata(string.Empty));
-
-        public string LogText
-        {
-            get => (string)GetValue(LogTextProperty);
-            set => SetValue(LogTextProperty, value);
-        }
+        public string logText { get; private set; }
 
         public LogViewerWindow(string theseLogs)
         {
             InitializeComponent();
-            LogText = theseLogs;
-            DataContext = this;
+            ViewerPopout.Text = theseLogs;
         }
 
         private void SaveAndClose_Click(object sender, RoutedEventArgs e)
         {
+            logText = ViewerPopout.Text;
             DialogResult = true;
             Close();
         }
