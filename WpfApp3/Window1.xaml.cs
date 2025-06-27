@@ -19,18 +19,26 @@ namespace ScriptArcade
     /// </summary>
     public partial class ScriptEditorWindow : Window
     {
-        public string ScriptText { get; private set; }
+        public static readonly DependencyProperty ScriptTextProperty =
+            DependencyProperty.Register(nameof(ScriptText), typeof(string), typeof(ScriptEditorWindow), new PropertyMetadata(string.Empty));
+
+        public string ScriptText
+        {
+            get => (string)GetValue(ScriptTextProperty);
+            set => SetValue(ScriptTextProperty, value);
+        }
 
         public ScriptEditorWindow(string currentScript)
         {
             InitializeComponent();
-            editorPopout.Text = currentScript;
+            ScriptText = currentScript;
+            DataContext = this;
         }
 
         private void SaveAndClose_Click(object sender, RoutedEventArgs e)
         {
-            ScriptText = editorPopout.Text;
-            this.Close();
+            DialogResult = true;
+            Close();
         }
     }
 
