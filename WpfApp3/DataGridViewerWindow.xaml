@@ -1,9 +1,0 @@
-<Window x:Class="ScriptArcade.DataGridViewerWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Grid Viewer" Height="450" Width="800">
-    <DockPanel>
-        <Button Content="Close" DockPanel.Dock="Bottom" Margin="5" Width="80" Click="Close_Click"/>
-        <DataGrid x:Name="gridPopout" ItemsSource="{Binding GridData}" AutoGenerateColumns="True"/>
-    </DockPanel>
-</Window>

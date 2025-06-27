@@ -313,36 +313,15 @@ namespace ScriptArcade
         }
         private void OpenLogsPopou(object sender, RoutedEventArgs e)
         {
-            if (dg_logs.ItemsSource != null && dg_logs.Visibility == Visibility.Visible)
-            {
-                var gridPopup = new DataGridViewerWindow(dg_logs.ItemsSource);
-                gridPopup.Owner = this;
-                gridPopup.Show();
-                return;
-            }
-
             var theseLogs = new System.Windows.Documents.TextRange(editorLogs.Document.ContentStart, editorLogs.Document.ContentEnd).Text;
+
             var popupViewer = new LogViewerWindow(theseLogs);
             bool? result = popupViewer.ShowDialog();
 
             if (result == true)
             {
                 editorLogs.Document.Blocks.Clear();
-                editorLogs.AppendText(popupViewer.LogText);
-            }
-        }
-
-        private void OpenWmiResultsPopout_Click(object sender, RoutedEventArgs e)
-        {
-            if (dgWmiResults.ItemsSource != null)
-            {
-                var gridPopup = new DataGridViewerWindow(dgWmiResults.ItemsSource);
-                gridPopup.Owner = this;
-                gridPopup.Show();
-            }
-            else
-            {
-                MessageBox.Show("No results to display.");
+                editorLogs.AppendText(popupViewer.logText);
             }
         }
         private void lb_jobs_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -352,16 +331,12 @@ namespace ScriptArcade
                 if (IsStructuredData(job.Log, out var tableData))
                 {
                     dg_logs.ItemsSource = tableData.DefaultView;
-                    dg_logs.Visibility = Visibility.Visible;
-                    editorLogs.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     dg_logs.IsEnabled = false;
-                    dg_logs.Visibility = Visibility.Collapsed;
                     // Fallback to plain text display
                     editorLogs.IsEnabled = true;
-                    editorLogs.Visibility = Visibility.Visible;
                     editorLogs.Document.Blocks.Clear();
                     editorLogs.AppendText(job.Log);
                 }
